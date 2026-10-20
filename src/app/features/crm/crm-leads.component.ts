@@ -1,5 +1,5 @@
 import { Component, inject, output, signal, computed, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LeadService } from '@core/services/lead.service';
 import { Lead, LeadStatus } from '@core/models/lead.model';
@@ -7,7 +7,7 @@ import { Lead, LeadStatus } from '@core/models/lead.model';
 @Component({
   selector: 'app-crm-leads',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [DatePipe, FormsModule],
   templateUrl: './crm-leads.component.html',
   styleUrl: './crm-leads.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

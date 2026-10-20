@@ -1,6 +1,8 @@
 import { Injectable, inject, signal, computed, DestroyRef } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { ApiService } from './api.service';
+import { HistoryService } from './history.service';
+import { JobMapper, CreateJobFormData } from './job.mapper';
 import { Task, CreateJobInput, UpdateJobInput, TaskStatus } from '../models/task.model';
 
 @Injectable({
@@ -8,6 +10,7 @@ import { Task, CreateJobInput, UpdateJobInput, TaskStatus } from '../models/task
 })
 export class JobService {
   private readonly api = inject(ApiService);
+  private readonly historyService = inject(HistoryService);
   private readonly destroyRef = inject(DestroyRef);
 
   private readonly _jobs = signal<Task[]>([]);
@@ -30,6 +33,10 @@ export class JobService {
 
   readonly newJobs = computed(() =>
     this._jobs().filter((job) => job.status === 'New')
+  );
+
+  readonly cancelledJobs = computed(() =>
+    this._jobs().filter((job) => job.status === 'Cancelled')
   );
 
   readonly totalCount = computed(() => this._jobs().length);
@@ -57,6 +64,11 @@ export class JobService {
     );
   }
 
+  createJobFromForm(formData: CreateJobFormData): Observable<Task> {
+    const input = JobMapper.mapFormDataToInput(formData);
+    return this.createJob(input);
+  }
+
   createJob(input: CreateJobInput): Observable<Task> {
     const title = input.title || `${input.jobType} – ${input.client.firstName} ${input.client.lastName}`;
     const now = new Date().toISOString();
@@ -80,6 +92,7 @@ export class JobService {
     return this.api.post<Task>('/tasks', payload).pipe(
       tap((created) => {
         this._jobs.update((prev) => [created, ...prev.filter((j) => j.id !== created.id)]);
+        this.historyService.loadHistory().subscribe({ error: () => {} });
       })
     );
   }
@@ -88,6 +101,7 @@ export class JobService {
     return this.api.patch<Task>(`/tasks/${id}`, input).pipe(
       tap((updated) => {
         this._jobs.update((prev) => prev.map((j) => (j.id === id ? updated : j)));
+        this.historyService.loadHistory().subscribe({ error: () => {} });
       })
     );
   }
@@ -96,6 +110,7 @@ export class JobService {
     return this.api.patch<Task>(`/tasks/${id}`, { status }).pipe(
       tap((updated) => {
         this._jobs.update((prev) => prev.map((j) => (j.id === id ? updated : j)));
+        this.historyService.loadHistory().subscribe({ error: () => {} });
       })
     );
   }
@@ -104,6 +119,7 @@ export class JobService {
     return this.api.delete<{ success: boolean; id: string }>(`/tasks/${id}`).pipe(
       tap(() => {
         this._jobs.update((prev) => prev.filter((j) => j.id !== id));
+        this.historyService.loadHistory().subscribe({ error: () => {} });
       })
     );
   }
@@ -115,6 +131,7 @@ export class JobService {
         next: (items) => this._jobs.set(items),
         error: () => {}
       });
+      this.historyService.loadHistory().subscribe({ error: () => {} });
     }, intervalMs);
   }
 

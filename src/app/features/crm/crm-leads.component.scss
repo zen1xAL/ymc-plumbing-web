@@ -31,7 +31,10 @@
 }
 
 .search-icon {
-  font-size: var(--font-size-body);
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
 }
 
 .search-input {
@@ -61,6 +64,9 @@
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
   transition: all 0.15s ease;
 
   &:hover {
@@ -153,10 +159,13 @@
 }
 
 .client-phone {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   font-size: var(--font-size-caption);
   color: var(--color-text-muted);
   margin-top: var(--spacing-xs);
+  text-decoration: none;
 
   &:hover {
     color: var(--color-primary);
@@ -194,13 +203,25 @@
 }
 
 .address-line {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
   font-size: var(--font-size-body-small);
   color: var(--color-text);
+}
+
+.icon-inline {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--color-text-muted);
 }
 
 .city-line {
   font-size: var(--font-size-caption-small);
   color: var(--color-text-subtle);
+  padding-left: 18px;
 }
 
 .cell-source {
@@ -250,12 +271,22 @@
 }
 
 .btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--radius-md);
+  cursor: pointer;
   transition: all 0.15s ease-in-out;
   min-height: 36px;
+}
+
+.btn-action-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .btn-convert {
@@ -281,6 +312,9 @@
 }
 
 .converted-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   color: var(--color-status-completed-text);

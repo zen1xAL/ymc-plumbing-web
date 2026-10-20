@@ -118,8 +118,8 @@
       "status": "New",
       "location": {
         "address": "742 Evergreen Terrace, Springfield, OR 97477",
-        "latitude": 53.9006,
-        "longitude": 27.559
+        "latitude": 44.0462,
+        "longitude": -123.022
       },
       "attachments": [],
       "syncStatus": "synced",
@@ -147,8 +147,8 @@
       "status": "In Progress",
       "location": {
         "address": "1000 Ocean Drive, Miami Beach, FL 33139",
-        "latitude": 53.9312,
-        "longitude": 27.493
+        "latitude": 25.7907,
+        "longitude": -80.13
       },
       "attachments": [],
       "syncStatus": "synced",
@@ -176,8 +176,8 @@
       "status": "Completed",
       "location": {
         "address": "450 Lexington Ave, New York, NY 10017",
-        "latitude": 53.9085,
-        "longitude": 27.4862
+        "latitude": 40.7128,
+        "longitude": -74.006
       },
       "attachments": [],
       "syncStatus": "synced",

@@ -1,7 +1,9 @@
 <header class="app-header">
   <div class="header-brand">
     <div class="brand-logo">
-      <span class="logo-icon">🚰</span>
+      <svg class="brand-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
       <div class="brand-text">
         <h1 class="brand-title">YMC Plumbing</h1>
         <span class="brand-subtitle">Диспетчерская служба (CRM & FMS)</span>
@@ -18,9 +20,11 @@
       (click)="setTab('crm')"
     >
       <span class="nav-label">CRM – Заявки клиентов</span>
-      <span class="nav-count" *ngIf="leadService.newLeads().length > 0">
-        {{ leadService.newLeads().length }}
-      </span>
+      @if (leadService.newLeads().length > 0) {
+        <span class="nav-count">
+          {{ leadService.newLeads().length }}
+        </span>
+      }
     </button>
 
     <button
@@ -55,7 +59,10 @@
       (click)="openCreateJobModal()"
       title="Создать новый наряд вручную"
     >
-      + Создать наряд
+      <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+      </svg>
+      <span>Создать наряд</span>
     </button>
 
     <div class="server-status">
@@ -69,79 +76,68 @@
       (click)="toggleTheme()"
       [title]="themeService.currentTheme() === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'"
     >
-      <span *ngIf="themeService.currentTheme() === 'light'">🌙 Тёмная</span>
-      <span *ngIf="themeService.currentTheme() === 'dark'">☀️ Светлая</span>
+      @if (themeService.currentTheme() === 'light') {
+        <svg class="theme-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+        </svg>
+        <span>Тёмная</span>
+      } @else {
+        <svg class="theme-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/>
+        </svg>
+        <span>Светлая</span>
+      }
     </button>
   </div>
 </header>
 
-<div class="toast-banner" *ngIf="toastMessage()">
-  <span class="toast-icon">⚡</span>
-  <span class="toast-text">{{ toastMessage() }}</span>
-</div>
+@if (toastMessage(); as toast) {
+  <div class="toast-banner">
+    <svg class="toast-icon" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+    </svg>
+    <span class="toast-text">{{ toast }}</span>
+  </div>
+}
 
 <main class="app-main">
   <section class="main-container">
-    <div *ngIf="activeTab() === 'crm'" class="view-panel">
-      <div class="panel-header">
-        <div>
-          <h2 class="panel-title">CRM – Входящие обращения клиентов</h2>
-          <p class="panel-desc">Обработка первичных лидов, фиксация проблем и конвертация в выездные наряды FMS</p>
-        </div>
-      </div>
-
-      <app-crm-leads
-        (createJobFromLead)="openCreateJobModal($event)"
-      ></app-crm-leads>
-    </div>
-
-    <div *ngIf="activeTab() === 'fms'" class="view-panel">
-      <div class="panel-header">
-        <div>
-          <h2 class="panel-title">FMS – Управление выездными нарядами</h2>
-          <p class="panel-desc">Синхронизация в реальном времени с мобильными устройствами мастеров</p>
-        </div>
-        <div class="summary-pills">
-          <span class="pill pill-new">Новых: {{ jobService.newJobs().length }}</span>
-          <span class="pill pill-progress">В работе: {{ jobService.inProgressJobs().length }}</span>
-          <span class="pill pill-completed">Завершено: {{ jobService.completedJobs().length }}</span>
-        </div>
-      </div>
-
-      <div class="status-overview-grid">
-        <div class="overview-card" *ngFor="let job of jobService.jobs()">
-          <div class="card-top">
-            <span class="job-id">{{ job.id }}</span>
-            <span class="status-badge" [ngClass]="'status-' + job.status.toLowerCase().replace(' ', '-')">
-              {{ job.status }}
-            </span>
-          </div>
-          <h3 class="job-title">{{ job.title }}</h3>
-          <p class="job-address">📍 {{ job.location.address }}</p>
-          <div class="card-meta">
-            <span class="meta-item">👨‍🔧 {{ job.assignedTechnician || 'Не назначен' }}</span>
-            <span class="meta-item">🕒 {{ job.dueDate | date:'short' }}</span>
+    @if (activeTab() === 'crm') {
+      <div class="view-panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">CRM – Входящие обращения клиентов</h2>
+            <p class="panel-desc">Обработка первичных лидов, фиксация проблем и конвертация в выездные наряды FMS</p>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div *ngIf="activeTab() === 'history'" class="view-panel">
-      <div class="panel-header">
-        <div>
-          <h2 class="panel-title">Журнал аудита операций</h2>
-          <p class="panel-desc">Сквозной хронологический лог действий диспетчера и мобильных сотрудников</p>
-        </div>
+        <app-crm-leads
+          (createJobFromLead)="openCreateJobModal($event)"
+        ></app-crm-leads>
       </div>
+    } @else if (activeTab() === 'fms') {
+      <div class="view-panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">FMS – Управление выездными нарядами</h2>
+            <p class="panel-desc">Синхронизация в реальном времени с мобильными устройствами мастеров</p>
+          </div>
+        </div>
 
-      <div class="history-list">
-        <div class="history-item" *ngFor="let item of historyService.history()">
-          <div class="history-time">{{ item.timestamp | date:'medium' }}</div>
-          <div class="history-action-badge">{{ item.actionType }}</div>
-          <div class="history-text">{{ item.description }}</div>
-        </div>
+        <app-fms-board></app-fms-board>
       </div>
-    </div>
+    } @else if (activeTab() === 'history') {
+      <div class="view-panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Журнал аудита операций</h2>
+            <p class="panel-desc">Сквозной хронологический лог действий диспетчера и мобильных сотрудников</p>
+          </div>
+        </div>
+
+        <app-history-log></app-history-log>
+      </div>
+    }
   </section>
 </main>
 

@@ -24,8 +24,16 @@
   gap: var(--spacing-sm);
 }
 
-.logo-icon {
-  font-size: var(--font-size-title-large);
+.brand-svg {
+  width: 26px;
+  height: 26px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .brand-title {
@@ -66,6 +74,9 @@
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
   transition: all 0.15s ease-in-out;
   min-height: 40px;
 
@@ -120,11 +131,18 @@
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-xs);
+  cursor: pointer;
   transition: background-color 0.15s ease;
 
   &:hover {
     background-color: var(--color-primary-hover);
   }
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 .server-status {
@@ -145,6 +163,9 @@
 }
 
 .theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
@@ -152,11 +173,18 @@
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
+  cursor: pointer;
   transition: background-color 0.15s ease;
 
   &:hover {
     background-color: var(--color-surface-hover);
   }
+}
+
+.theme-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .toast-banner {
@@ -171,6 +199,12 @@
   font-weight: var(--font-weight-medium);
   box-shadow: var(--shadow-md);
   animation: slideDown 0.25s ease-out;
+}
+
+.toast-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 @keyframes slideDown {
@@ -219,162 +253,4 @@
   font-size: var(--font-size-body-small);
   color: var(--color-text-muted);
   margin-top: var(--spacing-xs);
-}
-
-.summary-pills {
-  display: flex;
-  gap: var(--spacing-sm);
-}
-
-.pill {
-  font-size: var(--font-size-caption);
-  font-weight: var(--font-weight-semibold);
-  padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--radius-full);
-  border: 1px solid transparent;
-
-  &.pill-new {
-    background-color: var(--color-status-new-bg);
-    color: var(--color-status-new-text);
-    border-color: var(--color-status-new-border);
-  }
-
-  &.pill-progress {
-    background-color: var(--color-status-in-progress-bg);
-    color: var(--color-status-in-progress-text);
-    border-color: var(--color-status-in-progress-border);
-  }
-
-  &.pill-completed {
-    background-color: var(--color-status-completed-bg);
-    color: var(--color-status-completed-text);
-    border-color: var(--color-status-completed-border);
-  }
-}
-
-.status-overview-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-.overview-card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  transition: box-shadow 0.15s ease, border-color 0.15s ease;
-
-  &:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--color-border-strong);
-  }
-}
-
-.card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.job-id {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-caption);
-  color: var(--color-text-subtle);
-}
-
-.status-badge {
-  font-size: var(--font-size-caption-small);
-  font-weight: var(--font-weight-bold);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--radius-sm);
-  border: 1px solid transparent;
-
-  &.status-new {
-    background-color: var(--color-status-new-bg);
-    color: var(--color-status-new-text);
-    border-color: var(--color-status-new-border);
-  }
-
-  &.status-in-progress {
-    background-color: var(--color-status-in-progress-bg);
-    color: var(--color-status-in-progress-text);
-    border-color: var(--color-status-in-progress-border);
-  }
-
-  &.status-completed {
-    background-color: var(--color-status-completed-bg);
-    color: var(--color-status-completed-text);
-    border-color: var(--color-status-completed-border);
-  }
-
-  &.status-cancelled {
-    background-color: var(--color-status-cancelled-bg);
-    color: var(--color-status-cancelled-text);
-    border-color: var(--color-status-cancelled-border);
-  }
-}
-
-.job-title {
-  font-size: var(--font-size-title-small);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
-}
-
-.job-address {
-  font-size: var(--font-size-body-small);
-  color: var(--color-text-muted);
-}
-
-.card-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: var(--spacing-sm);
-  border-top: 1px solid var(--color-border);
-  font-size: var(--font-size-caption);
-  color: var(--color-text-subtle);
-}
-
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.history-item {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-md) var(--spacing-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.history-time {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-caption);
-  color: var(--color-text-subtle);
-  min-width: 160px;
-}
-
-.history-action-badge {
-  font-family: var(--font-mono);
-  font-size: var(--font-size-caption-small);
-  font-weight: var(--font-weight-bold);
-  padding: 2px 6px;
-  background-color: var(--color-surface-hover);
-  color: var(--color-text);
-  border-radius: var(--radius-xs);
-}
-
-.history-text {
-  font-size: var(--font-size-body);
-  color: var(--color-text);
 }

@@ -1,0 +1,368 @@
+<div class="fms-container">
+  <div class="fms-toolbar">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Поиск по названию, адресу, клиенту или ID наряда..."
+        [ngModel]="searchQuery()"
+        (ngModelChange)="onSearchChange($event)"
+      />
+    </div>
+
+    <div class="toolbar-controls">
+      <div class="filter-tabs">
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="selectedStatus() === 'ALL'"
+          (click)="setStatusFilter('ALL')"
+        >
+          Все ({{ jobService.totalCount() }})
+        </button>
+
+        <button
+          type="button"
+          class="filter-btn filter-btn-new"
+          [class.active]="selectedStatus() === 'New'"
+          (click)="setStatusFilter('New')"
+        >
+          Новые ({{ jobService.newJobs().length }})
+        </button>
+
+        <button
+          type="button"
+          class="filter-btn filter-btn-progress"
+          [class.active]="selectedStatus() === 'In Progress'"
+          (click)="setStatusFilter('In Progress')"
+        >
+          В работе ({{ jobService.inProgressJobs().length }})
+        </button>
+
+        <button
+          type="button"
+          class="filter-btn filter-btn-completed"
+          [class.active]="selectedStatus() === 'Completed'"
+          (click)="setStatusFilter('Completed')"
+        >
+          Завершены ({{ jobService.completedJobs().length }})
+        </button>
+
+        <button
+          type="button"
+          class="filter-btn filter-btn-cancelled"
+          [class.active]="selectedStatus() === 'Cancelled'"
+          (click)="setStatusFilter('Cancelled')"
+        >
+          Отменены ({{ jobService.cancelledJobs().length }})
+        </button>
+      </div>
+
+      <div class="tech-select-wrapper">
+        <label class="select-label" for="techFilter">Мастер:</label>
+        <select
+          id="techFilter"
+          class="tech-select"
+          [ngModel]="selectedTechnician()"
+          (ngModelChange)="setTechnicianFilter($event)"
+        >
+          <option value="ALL">Все специалисты</option>
+          @for (tech of technicianService.technicians(); track tech.id) {
+            <option [value]="tech.name">{{ tech.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="fms-grid">
+    @for (job of filteredJobs(); track job.id) {
+      <article
+        class="job-card"
+        [class.status-card-new]="job.status === 'New'"
+        [class.status-card-progress]="job.status === 'In Progress'"
+        [class.status-card-completed]="job.status === 'Completed'"
+        [class.status-card-cancelled]="job.status === 'Cancelled'"
+      >
+        <header class="card-header">
+          <div class="card-identity">
+            <span class="job-id">{{ job.id }}</span>
+            @if (job.syncStatus) {
+              <span class="sync-tag" [class.sync-synced]="job.syncStatus === 'synced'">
+                {{ job.syncStatus === 'synced' ? 'Синхронизирован' : 'Ожидание' }}
+              </span>
+            }
+          </div>
+
+          <span
+            class="status-badge"
+            [class.status-new]="job.status === 'New'"
+            [class.status-progress]="job.status === 'In Progress'"
+            [class.status-completed]="job.status === 'Completed'"
+            [class.status-cancelled]="job.status === 'Cancelled'"
+          >
+            {{ job.status === 'New' ? 'Новый' : job.status === 'In Progress' ? 'В работе' : job.status === 'Completed' ? 'Завершен' : 'Отменен' }}
+          </span>
+        </header>
+
+        <div class="card-body">
+          <h3 class="job-title" (click)="openJobDetails(job)">{{ job.title }}</h3>
+
+          @if (job.client) {
+            <div class="client-info">
+              <span class="client-name">{{ job.client.firstName }} {{ job.client.lastName }}</span>
+              <a [href]="'tel:' + job.client.phone" class="client-phone">
+                <svg class="icon-inline" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 4V3z"/>
+                </svg>
+                <span>{{ job.client.phone }}</span>
+              </a>
+            </div>
+          }
+
+          <div class="location-info">
+            <svg class="icon-inline" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="address-text">{{ job.location.address }}</span>
+          </div>
+
+          <div class="meta-row">
+            <div class="meta-item">
+              <svg class="icon-inline" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+              </svg>
+              <span>{{ job.assignedTechnician || 'Не назначен' }}</span>
+            </div>
+
+            <div class="meta-item">
+              <svg class="icon-inline" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+              </svg>
+              <span>{{ job.dueDate | date:'short' }}</span>
+            </div>
+          </div>
+
+          @if (job.description) {
+            <p class="job-description">{{ job.description }}</p>
+          }
+        </div>
+
+        <footer class="card-footer">
+          <div class="status-quick-actions">
+            @if (job.status === 'New') {
+              <button
+                type="button"
+                class="btn-status btn-progress"
+                (click)="updateJobStatus(job.id, 'In Progress')"
+                title="Перевести наряд в статус «В работе»"
+              >
+                В работу
+              </button>
+              <button
+                type="button"
+                class="btn-status btn-cancel"
+                (click)="updateJobStatus(job.id, 'Cancelled')"
+                title="Отменить наряд"
+              >
+                Отменить
+              </button>
+            } @else if (job.status === 'In Progress') {
+              <button
+                type="button"
+                class="btn-status btn-complete"
+                (click)="updateJobStatus(job.id, 'Completed')"
+                title="Отметить наряд как успешно завершенный"
+              >
+                Завершить
+              </button>
+              <button
+                type="button"
+                class="btn-status btn-cancel"
+                (click)="updateJobStatus(job.id, 'Cancelled')"
+                title="Отменить наряд"
+              >
+                Отменить
+              </button>
+            } @else if (job.status === 'Completed' || job.status === 'Cancelled') {
+              <button
+                type="button"
+                class="btn-status btn-reopen"
+                (click)="updateJobStatus(job.id, 'In Progress')"
+                title="Возобновить наряд"
+              >
+                Возобновить
+              </button>
+            }
+          </div>
+
+          <button
+            type="button"
+            class="btn-details"
+            (click)="openJobDetails(job)"
+            title="Открыть подробную карточку наряда и аудит"
+          >
+            Детали
+          </button>
+        </footer>
+      </article>
+    } @empty {
+      <div class="empty-state">
+        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <p class="empty-title">Наряды не найдены</p>
+        <p class="empty-desc">По заданным критериям фильтрации активных нарядов нет</p>
+      </div>
+    }
+  </div>
+
+  @if (selectedJobForDetails(); as job) {
+    <div class="drawer-backdrop" (click)="closeJobDetails()">
+      <aside class="drawer-panel" (click)="$event.stopPropagation()">
+        <header class="drawer-header">
+          <div class="drawer-title-block">
+            <div class="drawer-badges">
+              <span class="job-id">{{ job.id }}</span>
+              <span
+                class="status-badge"
+                [class.status-new]="job.status === 'New'"
+                [class.status-progress]="job.status === 'In Progress'"
+                [class.status-completed]="job.status === 'Completed'"
+                [class.status-cancelled]="job.status === 'Cancelled'"
+              >
+                {{ job.status === 'New' ? 'Новый' : job.status === 'In Progress' ? 'В работе' : job.status === 'Completed' ? 'Завершен' : 'Отменен' }}
+              </span>
+            </div>
+            <h2 class="drawer-title">{{ job.title }}</h2>
+          </div>
+          <button type="button" class="drawer-close-btn" (click)="closeJobDetails()" aria-label="Закрыть">
+            <svg class="close-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+        </header>
+
+        <div class="drawer-content">
+          <section class="drawer-section">
+            <h4 class="section-heading">Управление статусом</h4>
+            <div class="status-actions-grid">
+              @for (st of statusOptions; track st) {
+                <button
+                  type="button"
+                  class="btn-status-toggle"
+                  [class.active]="job.status === st"
+                  (click)="updateJobStatus(job.id, st)"
+                >
+                  {{ st === 'New' ? 'Новый' : st === 'In Progress' ? 'В работе' : st === 'Completed' ? 'Завершен' : 'Отменен' }}
+                </button>
+              }
+            </div>
+          </section>
+
+          <section class="drawer-section">
+            <h4 class="section-heading">Назначение специалиста</h4>
+            <select
+              class="form-select"
+              [ngModel]="job.assignedTechnician"
+              (ngModelChange)="reassignTechnician(job.id, $event)"
+            >
+              @for (tech of technicianService.activeTechnicians(); track tech.id) {
+                <option [value]="tech.name">
+                  {{ tech.name }} ({{ tech.specialization }})
+                </option>
+              }
+            </select>
+          </section>
+
+          @if (job.client) {
+            <section class="drawer-section">
+              <h4 class="section-heading">Информация о клиенте</h4>
+              <div class="info-list">
+                <div class="info-row">
+                  <span class="info-label">Клиент:</span>
+                  <span class="info-value">{{ job.client.firstName }} {{ job.client.lastName }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Телефон:</span>
+                  <a [href]="'tel:' + job.client.phone" class="info-value link">{{ job.client.phone }}</a>
+                </div>
+                @if (job.client.email) {
+                  <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">{{ job.client.email }}</span>
+                  </div>
+                }
+              </div>
+            </section>
+          }
+
+          <section class="drawer-section">
+            <h4 class="section-heading">Адрес и геолокация</h4>
+            <div class="info-list">
+              <div class="info-row">
+                <span class="info-label">Адрес:</span>
+                <span class="info-value">{{ job.location.address }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Координаты:</span>
+                <span class="info-value font-mono">
+                  {{ job.location.latitude }}, {{ job.location.longitude }}
+                </span>
+              </div>
+            </div>
+          </section>
+
+          <section class="drawer-section">
+            <h4 class="section-heading">Расписание и сроки</h4>
+            <div class="info-list">
+              <div class="info-row">
+                <span class="info-label">Плановый срок (Due):</span>
+                <span class="info-value">{{ job.dueDate | date:'medium' }}</span>
+              </div>
+              @if (job.scheduledTime) {
+                <div class="info-row">
+                  <span class="info-label">Интервал прибытия:</span>
+                  <span class="info-value">
+                    {{ job.scheduledTime.start | date:'shortTime' }} – {{ job.scheduledTime.end | date:'shortTime' }}
+                  </span>
+                </div>
+              }
+              <div class="info-row">
+                <span class="info-label">Создан в системе:</span>
+                <span class="info-value">{{ job.createdAt | date:'medium' }}</span>
+              </div>
+            </div>
+          </section>
+
+          @if (job.description) {
+            <section class="drawer-section">
+              <h4 class="section-heading">Описание задачи</h4>
+              <p class="description-box">{{ job.description }}</p>
+            </section>
+          }
+
+          <section class="drawer-section">
+            <h4 class="section-heading">История операций по наряду</h4>
+            <div class="job-history-timeline">
+              @for (entry of selectedJobHistory(); track entry.id) {
+                <div class="timeline-item">
+                  <div class="timeline-badge">{{ entry.actionType }}</div>
+                  <div class="timeline-body">
+                    <p class="timeline-text">{{ entry.description }}</p>
+                    <span class="timeline-time">{{ entry.timestamp | date:'short' }}</span>
+                  </div>
+                </div>
+              } @empty {
+                <p class="timeline-empty">События по данному наряду пока не зафиксированы</p>
+              }
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+  }
+</div>

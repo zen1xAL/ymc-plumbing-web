@@ -1,11 +1,12 @@
 import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ThemeService } from '@core/services/theme.service';
 import { JobService } from '@core/services/job.service';
 import { LeadService } from '@core/services/lead.service';
 import { TechnicianService } from '@core/services/technician.service';
 import { HistoryService } from '@core/services/history.service';
 import { CrmLeadsComponent } from '@features/crm/crm-leads.component';
+import { FmsBoardComponent } from '@features/fms/fms-board.component';
+import { HistoryLogComponent } from '@features/history/history-log.component';
 import { CreateJobModalComponent } from '@features/job-modal/create-job-modal.component';
 import { Lead } from '@core/models/lead.model';
 import { Task } from '@core/models/task.model';
@@ -15,7 +16,12 @@ export type NavigationTab = 'crm' | 'fms' | 'history';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, CrmLeadsComponent, CreateJobModalComponent],
+  imports: [
+    CrmLeadsComponent,
+    FmsBoardComponent,
+    HistoryLogComponent,
+    CreateJobModalComponent
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -44,6 +50,9 @@ export class App implements OnInit {
 
   setTab(tab: NavigationTab): void {
     this.activeTab.set(tab);
+    if (tab === 'history') {
+      this.historyService.loadHistory().subscribe();
+    }
   }
 
   toggleTheme(): void {

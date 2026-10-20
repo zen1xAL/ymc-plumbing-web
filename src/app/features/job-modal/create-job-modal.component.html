@@ -1,216 +1,250 @@
-<div class="modal-backdrop" *ngIf="isOpen()" (click)="onCancel()">
-  <div class="modal-card" (click)="$event.stopPropagation()">
-    <header class="modal-header">
-      <div class="header-titles">
-        <h2 class="modal-title">Создание выездного наряда (FMS)</h2>
-        <span class="modal-subtitle" *ngIf="leadToConvert()">
-          Конвертация обращения: {{ leadToConvert()?.client?.firstName }} {{ leadToConvert()?.client?.lastName }} ({{ leadToConvert()?.id }})
-        </span>
-        <span class="modal-subtitle" *ngIf="!leadToConvert()">
-          Новый наряд для выездного сантехника
-        </span>
-      </div>
-      <button type="button" class="close-btn" (click)="onCancel()" [disabled]="isSubmitting()">✕</button>
-    </header>
-
-    <div class="modal-alert-error" *ngIf="errorMessage()">
-      ⚠️ {{ errorMessage() }}
-    </div>
-
-    <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="modal-form">
-      <div class="form-section">
-        <h3 class="section-title">Данные клиента</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="firstName">Имя *</label>
-            <input
-              id="firstName"
-              type="text"
-              class="form-input"
-              [class.input-error]="isFieldInvalid('firstName')"
-              formControlName="firstName"
-              placeholder="Иван"
-            />
-            <span class="error-text" *ngIf="isFieldInvalid('firstName')">
-              Укажите имя клиента (минимум 2 символа)
+@if (isOpen()) {
+  <div class="modal-backdrop" (click)="onCancel()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <header class="modal-header">
+        <div class="header-titles">
+          <h2 class="modal-title">Создание выездного наряда (FMS)</h2>
+          @if (leadToConvert(); as lead) {
+            <span class="modal-subtitle">
+              Конвертация обращения: {{ lead.client.firstName }} {{ lead.client.lastName }} ({{ lead.id }})
             </span>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="lastName">Фамилия *</label>
-            <input
-              id="lastName"
-              type="text"
-              class="form-input"
-              [class.input-error]="isFieldInvalid('lastName')"
-              formControlName="lastName"
-              placeholder="Иванов"
-            />
-            <span class="error-text" *ngIf="isFieldInvalid('lastName')">
-              Укажите фамилию клиента (минимум 2 символа)
+          } @else {
+            <span class="modal-subtitle">
+              Новый наряд для выездного сантехника
             </span>
+          }
+        </div>
+        <button type="button" class="close-btn" (click)="onCancel()" [disabled]="isSubmitting()" aria-label="Закрыть">
+          <svg class="close-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+      </header>
+
+      @if (errorMessage(); as error) {
+        <div class="modal-alert-error">
+          <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          <span>{{ error }}</span>
+        </div>
+      }
+
+      <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="modal-form">
+        <div class="form-section">
+          <h3 class="section-title">Данные клиента</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="firstName">Имя *</label>
+              <input
+                id="firstName"
+                type="text"
+                class="form-input"
+                [class.input-error]="isFieldInvalid('firstName')"
+                formControlName="firstName"
+                placeholder="Иван"
+              />
+              @if (isFieldInvalid('firstName')) {
+                <span class="error-text">
+                  Укажите имя клиента (минимум 2 символа)
+                </span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="lastName">Фамилия *</label>
+              <input
+                id="lastName"
+                type="text"
+                class="form-input"
+                [class.input-error]="isFieldInvalid('lastName')"
+                formControlName="lastName"
+                placeholder="Иванов"
+              />
+              @if (isFieldInvalid('lastName')) {
+                <span class="error-text">
+                  Укажите фамилию клиента (минимум 2 символа)
+                </span>
+              }
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="phone">Номер телефона *</label>
+              <input
+                id="phone"
+                type="tel"
+                class="form-input"
+                [class.input-error]="isFieldInvalid('phone')"
+                formControlName="phone"
+                placeholder="+1 (555) 123-4567"
+              />
+              @if (isFieldInvalid('phone')) {
+                <span class="error-text">
+                  Укажите корректный номер телефона
+                </span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email">Электронная почта</label>
+              <input
+                id="email"
+                type="email"
+                class="form-input"
+                [class.input-error]="isFieldInvalid('email')"
+                formControlName="email"
+                placeholder="client@example.com"
+              />
+              @if (isFieldInvalid('email')) {
+                <span class="error-text">
+                  Некорректный формат email
+                </span>
+              }
+            </div>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="phone">Номер телефона *</label>
-            <input
-              id="phone"
-              type="tel"
-              class="form-input"
-              [class.input-error]="isFieldInvalid('phone')"
-              formControlName="phone"
-              placeholder="+1 (555) 123-4567"
-            />
-            <span class="error-text" *ngIf="isFieldInvalid('phone')">
-              Укажите корректный номер телефона
-            </span>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="email">Электронная почта</label>
-            <input
-              id="email"
-              type="email"
-              class="form-input"
-              [class.input-error]="isFieldInvalid('email')"
-              formControlName="email"
-              placeholder="client@example.com"
-            />
-            <span class="error-text" *ngIf="isFieldInvalid('email')">
-              Некорректный формат email
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title">Параметры работ и адрес объекта</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="jobType">Тип работ *</label>
-            <select
-              id="jobType"
-              class="form-select"
-              formControlName="jobType"
-              [class.input-error]="isFieldInvalid('jobType')"
-            >
-              <option *ngFor="let type of jobTypes" [value]="type">{{ type }}</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="source">Источник обращения *</label>
-            <select
-              id="source"
-              class="form-select"
-              formControlName="source"
-              [class.input-error]="isFieldInvalid('source')"
-            >
-              <option *ngFor="let src of leadSources" [value]="src">{{ src }}</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="address">Адрес объекта *</label>
-          <input
-            id="address"
-            type="text"
-            class="form-input"
-            [class.input-error]="isFieldInvalid('address')"
-            formControlName="address"
-            placeholder="Улица, дом, квартира / офис"
-          />
-          <span class="error-text" *ngIf="isFieldInvalid('address')">
-            Укажите точный адрес объекта (минимум 5 символов)
-          </span>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="city">Город</label>
-            <input id="city" type="text" class="form-input" formControlName="city" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="zipCode">Почтовый индекс (ZIP)</label>
-            <input id="zipCode" type="text" class="form-input" formControlName="zipCode" />
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h3 class="section-title">Назначение мастера и расписание</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="assignedTechnician">Назначенный сантехник *</label>
-            <select
-              id="assignedTechnician"
-              class="form-select"
-              formControlName="assignedTechnician"
-              [class.input-error]="isFieldInvalid('assignedTechnician')"
-            >
-              <option value="" disabled>– Выберите специалиста –</option>
-              <option
-                *ngFor="let tech of technicianService.activeTechnicians()"
-                [value]="tech.name"
+        <div class="form-section">
+          <h3 class="section-title">Параметры работ и адрес объекта</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="jobType">Тип работ *</label>
+              <select
+                id="jobType"
+                class="form-select"
+                formControlName="jobType"
+                [class.input-error]="isFieldInvalid('jobType')"
               >
-                {{ tech.name }} ({{ tech.specialization }})
-              </option>
-            </select>
-            <span class="error-text" *ngIf="isFieldInvalid('assignedTechnician')">
-              Выберите мастера для выполнения наряда
-            </span>
+                @for (type of jobTypes; track type) {
+                  <option [value]="type">{{ type }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="source">Источник обращения *</label>
+              <select
+                id="source"
+                class="form-select"
+                formControlName="source"
+                [class.input-error]="isFieldInvalid('source')"
+              >
+                @for (src of leadSources; track src) {
+                  <option [value]="src">{{ src }}</option>
+                }
+              </select>
+            </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="scheduledStart">Время прибытия (Start) *</label>
+            <label class="form-label" for="address">Адрес объекта *</label>
             <input
-              id="scheduledStart"
-              type="datetime-local"
+              id="address"
+              type="text"
               class="form-input"
-              [class.input-error]="isFieldInvalid('scheduledStart')"
-              formControlName="scheduledStart"
+              [class.input-error]="isFieldInvalid('address')"
+              formControlName="address"
+              placeholder="Улица, дом, квартира / офис"
             />
-            <span class="error-text" *ngIf="isFieldInvalid('scheduledStart')">
-              Укажите планируемое время начала работ
-            </span>
+            @if (isFieldInvalid('address')) {
+              <span class="error-text">
+                Укажите точный адрес объекта (минимум 5 символов)
+              </span>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="city">Город</label>
+              <input id="city" type="text" class="form-input" formControlName="city" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="zipCode">Почтовый индекс (ZIP)</label>
+              <input id="zipCode" type="text" class="form-input" formControlName="zipCode" />
+            </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="description">Описание проблемы и комментарий диспетчера</label>
-          <textarea
-            id="description"
-            class="form-textarea"
-            rows="3"
-            formControlName="description"
-            placeholder="Опишите характер неисправности, доступ на объект, контакты консьержа..."
-          ></textarea>
+        <div class="form-section">
+          <h3 class="section-title">Назначение мастера и расписание</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="assignedTechnician">Назначенный сантехник *</label>
+              <select
+                id="assignedTechnician"
+                class="form-select"
+                formControlName="assignedTechnician"
+                [class.input-error]="isFieldInvalid('assignedTechnician')"
+              >
+                <option value="" disabled>– Выберите специалиста –</option>
+                @for (tech of technicianService.activeTechnicians(); track tech.id) {
+                  <option [value]="tech.name">
+                    {{ tech.name }} ({{ tech.specialization }})
+                  </option>
+                }
+              </select>
+              @if (isFieldInvalid('assignedTechnician')) {
+                <span class="error-text">
+                  Выберите мастера для выполнения наряда
+                </span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="scheduledStart">Время прибытия (Start) *</label>
+              <input
+                id="scheduledStart"
+                type="datetime-local"
+                class="form-input"
+                [class.input-error]="isFieldInvalid('scheduledStart')"
+                formControlName="scheduledStart"
+              />
+              @if (isFieldInvalid('scheduledStart')) {
+                <span class="error-text">
+                  Укажите планируемое время начала работ
+                </span>
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="description">Описание проблемы и комментарий диспетчера</label>
+            <textarea
+              id="description"
+              class="form-textarea"
+              rows="3"
+              formControlName="description"
+              placeholder="Опишите характер неисправности, доступ на объект, контакты консьержа..."
+            ></textarea>
+          </div>
         </div>
-      </div>
 
-      <footer class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          (click)="onCancel()"
-          [disabled]="isSubmitting()"
-        >
-          Отмена
-        </button>
+        <footer class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onCancel()"
+            [disabled]="isSubmitting()"
+          >
+            Отмена
+          </button>
 
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="jobForm.invalid || isSubmitting()"
-        >
-          <span *ngIf="isSubmitting()">Отправка наряда...</span>
-          <span *ngIf="!isSubmitting()">Создать наряд и уведомить мастера</span>
-        </button>
-      </footer>
-    </form>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="jobForm.invalid || isSubmitting()"
+          >
+            @if (isSubmitting()) {
+              <span>Отправка наряда...</span>
+            } @else {
+              <span>Создать наряд и уведомить мастера</span>
+            }
+          </button>
+        </footer>
+      </form>
+    </div>
   </div>
-</div>
+}

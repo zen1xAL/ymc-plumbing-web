@@ -1,16 +1,23 @@
 import { Component, inject, input, output, signal, effect, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JobService } from '@core/services/job.service';
 import { LeadService } from '@core/services/lead.service';
 import { TechnicianService } from '@core/services/technician.service';
 import { Lead } from '@core/models/lead.model';
-import { Task, CreateJobInput } from '@core/models/task.model';
+import { Task } from '@core/models/task.model';
+import {
+  JOB_TYPES,
+  LEAD_SOURCES,
+  DEFAULT_CITY,
+  DEFAULT_ZIP,
+  DEFAULT_SCHEDULE_DELAY_HOURS,
+  DEFAULT_JOB_DURATION_HOURS
+} from '@core/models/constants';
 
 @Component({
   selector: 'app-create-job-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './create-job-modal.component.html',
   styleUrl: './create-job-modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -30,32 +37,19 @@ export class CreateJobModalComponent {
   readonly isSubmitting = signal<boolean>(false);
   readonly errorMessage = signal<string | null>(null);
 
-  readonly jobTypes: string[] = [
-    'Pipe Leak',
-    'Clogged Drain',
-    'Water Heater',
-    'Emergency Repair',
-    'Inspection'
-  ];
-
-  readonly leadSources: string[] = [
-    'Website',
-    'Phone',
-    'Google Ads',
-    'Referral',
-    'Walk-in'
-  ];
+  readonly jobTypes = JOB_TYPES;
+  readonly leadSources = LEAD_SOURCES;
 
   readonly jobForm: FormGroup = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(2)]],
     lastName: ['', [Validators.required, Validators.minLength(2)]],
     phone: ['', [Validators.required, Validators.pattern(/^[0-9+() -]{7,25}$/)]],
     email: ['', [Validators.email]],
-    jobType: ['Pipe Leak', [Validators.required]],
-    source: ['Website', [Validators.required]],
+    jobType: [JOB_TYPES[0], [Validators.required]],
+    source: [LEAD_SOURCES[0], [Validators.required]],
     address: ['', [Validators.required, Validators.minLength(5)]],
-    city: ['Springfield'],
-    zipCode: ['97477'],
+    city: [DEFAULT_CITY],
+    zipCode: [DEFAULT_ZIP],
     assignedTechnician: ['', [Validators.required]],
     scheduledStart: ['', [Validators.required]],
     scheduledEnd: [''],
@@ -77,8 +71,8 @@ export class CreateJobModalComponent {
     this.isSubmitting.set(false);
 
     const now = new Date();
-    const start = new Date(now.getTime() + 60 * 60 * 1000);
-    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    const start = new Date(now.getTime() + DEFAULT_SCHEDULE_DELAY_HOURS * 60 * 60 * 1000);
+    const end = new Date(start.getTime() + DEFAULT_JOB_DURATION_HOURS * 60 * 60 * 1000);
 
     const formatForInput = (d: Date) => {
       const pad = (n: number) => n.toString().padStart(2, '0');
@@ -86,7 +80,7 @@ export class CreateJobModalComponent {
     };
 
     const activeTechs = this.technicianService.activeTechnicians();
-    const defaultTech = activeTechs.length > 0 ? activeTechs[0].name : 'Mike Johnson';
+    const defaultTech = activeTechs.length > 0 ? activeTechs[0].name : '';
 
     if (lead) {
       this.jobForm.reset({
@@ -94,11 +88,11 @@ export class CreateJobModalComponent {
         lastName: lead.client.lastName,
         phone: lead.client.phone,
         email: lead.client.email || '',
-        jobType: lead.jobType || 'Pipe Leak',
-        source: lead.source || 'Website',
+        jobType: lead.jobType || JOB_TYPES[0],
+        source: lead.source || LEAD_SOURCES[0],
         address: lead.address,
-        city: lead.city || 'Springfield',
-        zipCode: lead.zipCode || '97477',
+        city: lead.city || DEFAULT_CITY,
+        zipCode: lead.zipCode || DEFAULT_ZIP,
         assignedTechnician: defaultTech,
         scheduledStart: formatForInput(start),
         scheduledEnd: formatForInput(end),
@@ -110,11 +104,11 @@ export class CreateJobModalComponent {
         lastName: '',
         phone: '',
         email: '',
-        jobType: 'Pipe Leak',
-        source: 'Phone',
+        jobType: JOB_TYPES[0],
+        source: LEAD_SOURCES[1],
         address: '',
-        city: 'Springfield',
-        zipCode: '97477',
+        city: DEFAULT_CITY,
+        zipCode: DEFAULT_ZIP,
         assignedTechnician: defaultTech,
         scheduledStart: formatForInput(start),
         scheduledEnd: formatForInput(end),
@@ -141,37 +135,9 @@ export class CreateJobModalComponent {
     this.isSubmitting.set(true);
     this.errorMessage.set(null);
 
-    const v = this.jobForm.value;
-    const startDate = new Date(v.scheduledStart);
-    const endDate = v.scheduledEnd ? new Date(v.scheduledEnd) : new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
+    const rawValue = this.jobForm.getRawValue();
 
-    const fullAddress = [v.address, v.city, v.zipCode].filter(Boolean).join(', ');
-
-    const jobInput: CreateJobInput = {
-      title: `${v.jobType} – ${v.firstName} ${v.lastName}`,
-      description: v.description || `Выполнение работ по заявке: ${v.jobType}`,
-      dueDate: startDate.toISOString(),
-      location: {
-        address: fullAddress,
-        latitude: 53.9006,
-        longitude: 27.5590
-      },
-      client: {
-        firstName: v.firstName,
-        lastName: v.lastName,
-        phone: v.phone,
-        email: v.email || undefined
-      },
-      jobType: v.jobType,
-      source: v.source,
-      assignedTechnician: v.assignedTechnician,
-      scheduledTime: {
-        start: startDate.toISOString(),
-        end: endDate.toISOString()
-      }
-    };
-
-    this.jobService.createJob(jobInput).subscribe({
+    this.jobService.createJobFromForm(rawValue).subscribe({
       next: (createdTask) => {
         const lead = this.leadToConvert();
         if (lead) {

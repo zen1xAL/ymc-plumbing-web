@@ -1,7 +1,9 @@
 <div class="crm-container">
   <div class="crm-toolbar">
     <div class="search-box">
-      <span class="search-icon">🔍</span>
+      <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+      </svg>
       <input
         type="text"
         class="search-input"
@@ -64,85 +66,108 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let lead of filteredLeads()" [class.row-converted]="lead.status === 'Converted'">
-          <td class="cell-id">
-            <span class="lead-code">{{ lead.id }}</span>
-            <span class="lead-date">{{ lead.createdAt | date:'short' }}</span>
-          </td>
+        @for (lead of filteredLeads(); track lead.id) {
+          <tr [class.row-converted]="lead.status === 'Converted'">
+            <td class="cell-id">
+              <span class="lead-code">{{ lead.id }}</span>
+              <span class="lead-date">{{ lead.createdAt | date:'short' }}</span>
+            </td>
 
-          <td class="cell-client">
-            <div class="client-name">{{ lead.client.firstName }} {{ lead.client.lastName }}</div>
-            <a [href]="'tel:' + lead.client.phone" class="client-phone">📞 {{ lead.client.phone }}</a>
-            <div class="client-email" *ngIf="lead.client.email">{{ lead.client.email }}</div>
-          </td>
+            <td class="cell-client">
+              <div class="client-name">{{ lead.client.firstName }} {{ lead.client.lastName }}</div>
+              <a [href]="'tel:' + lead.client.phone" class="client-phone">
+                <svg class="icon-inline" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 4V3z"/>
+                </svg>
+                <span>{{ lead.client.phone }}</span>
+              </a>
+              @if (lead.client.email) {
+                <div class="client-email">{{ lead.client.email }}</div>
+              }
+            </td>
 
-          <td class="cell-job">
-            <span class="job-pill">{{ lead.jobType }}</span>
-            <p class="job-desc">{{ lead.description }}</p>
-          </td>
+            <td class="cell-job">
+              <span class="job-pill">{{ lead.jobType }}</span>
+              <p class="job-desc">{{ lead.description }}</p>
+            </td>
 
-          <td class="cell-address">
-            <div class="address-line">📍 {{ lead.address }}</div>
-            <div class="city-line" *ngIf="lead.city">{{ lead.city }}, {{ lead.zipCode }}</div>
-          </td>
+            <td class="cell-address">
+              <div class="address-line">
+                <svg class="icon-inline" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                </svg>
+                <span>{{ lead.address }}</span>
+              </div>
+              @if (lead.city) {
+                <div class="city-line">{{ lead.city }}, {{ lead.zipCode }}</div>
+              }
+            </td>
 
-          <td class="cell-source">
-            <span class="source-tag" [ngClass]="'source-' + lead.source.toLowerCase().replace(' ', '-')">
-              {{ lead.source }}
-            </span>
-          </td>
-
-          <td class="cell-status">
-            <span
-              class="status-badge"
-              [ngClass]="{
-                'status-new': lead.status === 'New',
-                'status-converted': lead.status === 'Converted',
-                'status-dismissed': lead.status === 'Dismissed'
-              }"
-            >
-              {{ lead.status === 'New' ? 'Новый' : lead.status === 'Converted' ? 'Конвертирован' : 'Отклонён' }}
-            </span>
-          </td>
-
-          <td class="cell-actions text-right">
-            <div class="action-buttons">
-              <button
-                *ngIf="lead.status === 'New'"
-                type="button"
-                class="btn-action btn-convert"
-                (click)="onCreateJobClick(lead)"
-                title="Создать наряд и передать выездному специалисту"
-              >
-                ⚡ Create a Job
-              </button>
-
-              <button
-                *ngIf="lead.status === 'New'"
-                type="button"
-                class="btn-action btn-dismiss"
-                (click)="onDismissLead(lead)"
-                title="Отклонить нецелевое обращение"
-              >
-                ✕ Отклонить
-              </button>
-
-              <span *ngIf="lead.status === 'Converted'" class="converted-label">
-                ✓ Наряд создан
+            <td class="cell-source">
+              <span class="source-tag" [class.source-website]="lead.source === 'Website'" [class.source-phone]="lead.source === 'Phone'" [class.source-google-ads]="lead.source === 'Google Ads'" [class.source-referral]="lead.source === 'Referral'" [class.source-walk-in]="lead.source === 'Walk-in'">
+                {{ lead.source }}
               </span>
+            </td>
 
-              <span *ngIf="lead.status === 'Dismissed'" class="dismissed-label">
-                Архив
+            <td class="cell-status">
+              <span
+                class="status-badge"
+                [class.status-new]="lead.status === 'New'"
+                [class.status-converted]="lead.status === 'Converted'"
+                [class.status-dismissed]="lead.status === 'Dismissed'"
+              >
+                {{ lead.status === 'New' ? 'Новый' : lead.status === 'Converted' ? 'Конвертирован' : 'Отклонён' }}
               </span>
-            </div>
-          </td>
-        </tr>
+            </td>
 
-        <tr *ngIf="filteredLeads().length === 0">
-          <td colspan="7" class="empty-cell">
-            В текущей выборке обращений не найдено
-          </td>
-        </tr>
+            <td class="cell-actions text-right">
+              <div class="action-buttons">
+                @if (lead.status === 'New') {
+                  <button
+                    type="button"
+                    class="btn-action btn-convert"
+                    (click)="onCreateJobClick(lead)"
+                    title="Создать наряд и передать выездному специалисту"
+                  >
+                    <svg class="btn-action-icon" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Создать наряд</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn-action btn-dismiss"
+                    (click)="onDismissLead(lead)"
+                    title="Отклонить нецелевое обращение"
+                  >
+                    <svg class="btn-action-icon" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Отклонить</span>
+                  </button>
+                } @else if (lead.status === 'Converted') {
+                  <span class="converted-label">
+                    <svg class="btn-action-icon" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Наряд создан</span>
+                  </span>
+                } @else if (lead.status === 'Dismissed') {
+                  <span class="dismissed-label">
+                    Архив
+                  </span>
+                }
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="empty-cell">
+              В текущей выборке обращений не найдено
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>
