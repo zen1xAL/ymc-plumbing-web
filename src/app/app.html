@@ -49,6 +49,15 @@
   </nav>
 
   <div class="header-actions">
+    <button
+      type="button"
+      class="btn-new-job"
+      (click)="openCreateJobModal()"
+      title="Создать новый наряд вручную"
+    >
+      + Создать наряд
+    </button>
+
     <div class="server-status">
       <span class="status-indicator"></span>
       <span class="status-text">Сервер :3000</span>
@@ -66,8 +75,26 @@
   </div>
 </header>
 
+<div class="toast-banner" *ngIf="toastMessage()">
+  <span class="toast-icon">⚡</span>
+  <span class="toast-text">{{ toastMessage() }}</span>
+</div>
+
 <main class="app-main">
   <section class="main-container">
+    <div *ngIf="activeTab() === 'crm'" class="view-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">CRM – Входящие обращения клиентов</h2>
+          <p class="panel-desc">Обработка первичных лидов, фиксация проблем и конвертация в выездные наряды FMS</p>
+        </div>
+      </div>
+
+      <app-crm-leads
+        (createJobFromLead)="openCreateJobModal($event)"
+      ></app-crm-leads>
+    </div>
+
     <div *ngIf="activeTab() === 'fms'" class="view-panel">
       <div class="panel-header">
         <div>
@@ -99,31 +126,6 @@
       </div>
     </div>
 
-    <div *ngIf="activeTab() === 'crm'" class="view-panel">
-      <div class="panel-header">
-        <div>
-          <h2 class="panel-title">CRM – Входящие обращения клиентов</h2>
-          <p class="panel-desc">Обработка первичных лидов и конвертация в выездные наряды</p>
-        </div>
-      </div>
-
-      <div class="status-overview-grid">
-        <div class="overview-card" *ngFor="let lead of leadService.leads()">
-          <div class="card-top">
-            <span class="job-id">{{ lead.id }}</span>
-            <span class="status-badge status-new">{{ lead.status }}</span>
-          </div>
-          <h3 class="job-title">{{ lead.jobType }} – {{ lead.client.firstName }} {{ lead.client.lastName }}</h3>
-          <p class="job-address">📍 {{ lead.address }}</p>
-          <p class="job-desc">{{ lead.description }}</p>
-          <div class="card-meta">
-            <span class="meta-item">📞 {{ lead.client.phone }}</span>
-            <span class="meta-item">🌐 {{ lead.source }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div *ngIf="activeTab() === 'history'" class="view-panel">
       <div class="panel-header">
         <div>
@@ -142,3 +144,10 @@
     </div>
   </section>
 </main>
+
+<app-create-job-modal
+  [isOpen]="isCreateJobModalOpen()"
+  [leadToConvert]="selectedLeadForConversion()"
+  (close)="closeCreateJobModal()"
+  (jobSaved)="onJobCreated($event)"
+></app-create-job-modal>

@@ -9,18 +9,24 @@ export class ThemeService {
   readonly currentTheme = signal<ThemeMode>('light');
 
   constructor() {
-    const saved = localStorage.getItem('ymc_theme') as ThemeMode | null;
+    const hasLocalStorage = typeof localStorage !== 'undefined';
+    const saved = hasLocalStorage ? (localStorage.getItem('ymc_theme') as ThemeMode | null) : null;
+
     if (saved === 'dark' || saved === 'light') {
       this.currentTheme.set(saved);
-    } else {
+    } else if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       this.currentTheme.set(prefersDark ? 'dark' : 'light');
     }
 
     effect(() => {
       const theme = this.currentTheme();
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('ymc_theme', theme);
+      if (typeof document !== 'undefined') {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      if (hasLocalStorage) {
+        localStorage.setItem('ymc_theme', theme);
+      }
     });
   }
 

@@ -1,0 +1,149 @@
+<div class="crm-container">
+  <div class="crm-toolbar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Поиск по клиенту, телефону, адресу или типу работ..."
+        [ngModel]="searchQuery()"
+        (ngModelChange)="onSearchChange($event)"
+      />
+    </div>
+
+    <div class="filter-tabs">
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="selectedStatus() === 'ALL'"
+        (click)="setStatusFilter('ALL')"
+      >
+        Все ({{ leadService.totalCount() }})
+      </button>
+
+      <button
+        type="button"
+        class="filter-btn filter-btn-new"
+        [class.active]="selectedStatus() === 'New'"
+        (click)="setStatusFilter('New')"
+      >
+        Новые ({{ leadService.newLeads().length }})
+      </button>
+
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="selectedStatus() === 'Converted'"
+        (click)="setStatusFilter('Converted')"
+      >
+        Конвертированы ({{ leadService.convertedLeads().length }})
+      </button>
+
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="selectedStatus() === 'Dismissed'"
+        (click)="setStatusFilter('Dismissed')"
+      >
+        Отклонены
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="crm-table">
+      <thead>
+        <tr>
+          <th>ID / Дата</th>
+          <th>Клиент</th>
+          <th>Услуга / Неисправность</th>
+          <th>Адрес объекта</th>
+          <th>Источник</th>
+          <th>Статус</th>
+          <th class="text-right">Действие</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lead of filteredLeads()" [class.row-converted]="lead.status === 'Converted'">
+          <td class="cell-id">
+            <span class="lead-code">{{ lead.id }}</span>
+            <span class="lead-date">{{ lead.createdAt | date:'short' }}</span>
+          </td>
+
+          <td class="cell-client">
+            <div class="client-name">{{ lead.client.firstName }} {{ lead.client.lastName }}</div>
+            <a [href]="'tel:' + lead.client.phone" class="client-phone">📞 {{ lead.client.phone }}</a>
+            <div class="client-email" *ngIf="lead.client.email">{{ lead.client.email }}</div>
+          </td>
+
+          <td class="cell-job">
+            <span class="job-pill">{{ lead.jobType }}</span>
+            <p class="job-desc">{{ lead.description }}</p>
+          </td>
+
+          <td class="cell-address">
+            <div class="address-line">📍 {{ lead.address }}</div>
+            <div class="city-line" *ngIf="lead.city">{{ lead.city }}, {{ lead.zipCode }}</div>
+          </td>
+
+          <td class="cell-source">
+            <span class="source-tag" [ngClass]="'source-' + lead.source.toLowerCase().replace(' ', '-')">
+              {{ lead.source }}
+            </span>
+          </td>
+
+          <td class="cell-status">
+            <span
+              class="status-badge"
+              [ngClass]="{
+                'status-new': lead.status === 'New',
+                'status-converted': lead.status === 'Converted',
+                'status-dismissed': lead.status === 'Dismissed'
+              }"
+            >
+              {{ lead.status === 'New' ? 'Новый' : lead.status === 'Converted' ? 'Конвертирован' : 'Отклонён' }}
+            </span>
+          </td>
+
+          <td class="cell-actions text-right">
+            <div class="action-buttons">
+              <button
+                *ngIf="lead.status === 'New'"
+                type="button"
+                class="btn-action btn-convert"
+                (click)="onCreateJobClick(lead)"
+                title="Создать наряд и передать выездному специалисту"
+              >
+                ⚡ Create a Job
+              </button>
+
+              <button
+                *ngIf="lead.status === 'New'"
+                type="button"
+                class="btn-action btn-dismiss"
+                (click)="onDismissLead(lead)"
+                title="Отклонить нецелевое обращение"
+              >
+                ✕ Отклонить
+              </button>
+
+              <span *ngIf="lead.status === 'Converted'" class="converted-label">
+                ✓ Наряд создан
+              </span>
+
+              <span *ngIf="lead.status === 'Dismissed'" class="dismissed-label">
+                Архив
+              </span>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="filteredLeads().length === 0">
+          <td colspan="7" class="empty-cell">
+            В текущей выборке обращений не найдено
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
