@@ -204,9 +204,15 @@ app.put('/tasks/:id', async (req, res) => {
   if (!db.tasks) db.tasks = [];
   const index = db.tasks.findIndex((t) => t.id === req.params.id);
 
+  const existing = index >= 0 ? db.tasks[index] : {};
   const now = new Date().toISOString();
   const updatedTask = {
+    ...existing,
     ...req.body,
+    location: {
+      ...(existing.location || {}),
+      ...(req.body.location || {})
+    },
     id: req.params.id,
     updatedAt: now,
     syncStatus: 'synced'
@@ -255,6 +261,9 @@ app.patch('/tasks/:id', async (req, res) => {
   const patchedTask = {
     ...existing,
     ...req.body,
+    location: req.body.location
+      ? { ...(existing.location || {}), ...req.body.location }
+      : existing.location,
     id: req.params.id,
     updatedAt: now,
     syncStatus: 'synced'
