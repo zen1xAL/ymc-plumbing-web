@@ -2,7 +2,9 @@ import { Component, inject, signal, computed, ChangeDetectionStrategy, OnInit } 
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HistoryService } from '@core/services/history.service';
-import { HistoryActionType } from '@core/models/history.model';
+import { HistoryFilter } from '@core/services/history.filter';
+import { HistoryLogItem, HistoryActionType } from '@core/models/history.model';
+import { HISTORY_ACTION_TYPES } from '@core/models/constants';
 
 @Component({
   selector: 'app-history-log',
@@ -19,32 +21,14 @@ export class HistoryLogComponent implements OnInit {
   readonly searchQuery = signal<string>('');
   readonly isClearing = signal<boolean>(false);
 
-  readonly actionTypes: HistoryActionType[] = [
-    'CREATE',
-    'STATUS_CHANGE',
-    'EDIT',
-    'ATTACHMENT_ADD',
-    'ATTACHMENT_REMOVE',
-    'DELETE'
-  ];
+  readonly actionTypes = HISTORY_ACTION_TYPES;
 
-  readonly filteredHistory = computed(() => {
+  readonly filteredHistory = computed<HistoryLogItem[]>(() => {
     const action = this.selectedAction();
-    const query = this.searchQuery().toLowerCase().trim();
+    const query = this.searchQuery();
     const items = this.historyService.history();
 
-    return items.filter((item) => {
-      const matchAction = action === 'ALL' || item.actionType === action;
-      if (!matchAction) return false;
-
-      if (!query) return true;
-
-      const desc = (item.description || '').toLowerCase();
-      const taskTitle = (item.taskTitle || '').toLowerCase();
-      const taskId = (item.taskId || '').toLowerCase();
-
-      return desc.includes(query) || taskTitle.includes(query) || taskId.includes(query);
-    });
+    return items.filter((item) => HistoryFilter.matches(item, query, action));
   });
 
   ngOnInit(): void {

@@ -4,7 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { JobService } from '@core/services/job.service';
 import { TechnicianService } from '@core/services/technician.service';
 import { HistoryService } from '@core/services/history.service';
+import { JobFilter } from '@core/services/job.filter';
 import { Task, TaskStatus } from '@core/models/task.model';
+import { TASK_STATUS_OPTIONS } from '@core/models/constants';
+import { HistoryLogItem } from '@core/models/history.model';
 
 @Component({
   selector: 'app-fms-board',
@@ -24,40 +27,18 @@ export class FmsBoardComponent {
   readonly searchQuery = signal<string>('');
   readonly selectedJobForDetails = signal<Task | null>(null);
 
-  readonly statusOptions: TaskStatus[] = ['New', 'In Progress', 'Completed', 'Cancelled'];
+  readonly statusOptions = TASK_STATUS_OPTIONS;
 
-  readonly filteredJobs = computed(() => {
+  readonly filteredJobs = computed<Task[]>(() => {
     const status = this.selectedStatus();
     const tech = this.selectedTechnician();
-    const query = this.searchQuery().toLowerCase().trim();
+    const query = this.searchQuery();
     const jobs = this.jobService.jobs();
 
-    return jobs.filter((job) => {
-      const matchStatus = status === 'ALL' || job.status === status;
-      if (!matchStatus) return false;
-
-      const matchTech = tech === 'ALL' || job.assignedTechnician === tech;
-      if (!matchTech) return false;
-
-      if (!query) return true;
-
-      const title = (job.title || '').toLowerCase();
-      const address = (job.location?.address || '').toLowerCase();
-      const clientName = job.client ? `${job.client.firstName} ${job.client.lastName}`.toLowerCase() : '';
-      const phone = job.client?.phone ? job.client.phone.toLowerCase() : '';
-      const id = (job.id || '').toLowerCase();
-
-      return (
-        title.includes(query) ||
-        address.includes(query) ||
-        clientName.includes(query) ||
-        phone.includes(query) ||
-        id.includes(query)
-      );
-    });
+    return jobs.filter((job) => JobFilter.matches(job, query, status, tech));
   });
 
-  readonly selectedJobHistory = computed(() => {
+  readonly selectedJobHistory = computed<HistoryLogItem[]>(() => {
     const job = this.selectedJobForDetails();
     if (!job) return [];
     return this.historyService.history().filter((h) => h.taskId === job.id);
@@ -85,7 +66,7 @@ export class FmsBoardComponent {
 
   updateJobStatus(jobId: string, newStatus: TaskStatus): void {
     this.jobService.updateStatus(jobId, newStatus).subscribe({
-      next: (updated) => {
+      next: (updated: Task) => {
         if (this.selectedJobForDetails()?.id === jobId) {
           this.selectedJobForDetails.set(updated);
         }
@@ -95,7 +76,7 @@ export class FmsBoardComponent {
 
   reassignTechnician(jobId: string, technicianName: string): void {
     this.jobService.updateJob(jobId, { assignedTechnician: technicianName }).subscribe({
-      next: (updated) => {
+      next: (updated: Task) => {
         if (this.selectedJobForDetails()?.id === jobId) {
           this.selectedJobForDetails.set(updated);
         }

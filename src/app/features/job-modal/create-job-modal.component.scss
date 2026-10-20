@@ -1,6 +1,6 @@
 .modal-backdrop {
   position: fixed;
-  inset: 0;
+  inset: var(--spacing-none);
   background-color: var(--color-modal-overlay);
   display: flex;
   align-items: center;
@@ -11,11 +11,11 @@
 
 .modal-card {
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-thin) solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   width: 100%;
-  max-width: 680px;
+  max-width: var(--modal-width);
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-lg) var(--spacing-xxl);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: var(--border-width-thin) solid var(--color-border);
   background-color: var(--color-surface-subtle);
 }
 
@@ -51,13 +51,13 @@
 
 .close-btn {
   color: var(--color-text-muted);
-  width: 36px;
-  height: 36px;
+  width: var(--control-height-md);
+  height: var(--control-height-md);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  border: var(--border-width-thin) solid transparent;
   background: transparent;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
@@ -73,25 +73,20 @@
   }
 }
 
-.close-icon {
-  width: 20px;
-  height: 20px;
-}
-
 .modal-alert-error {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-md) var(--spacing-xxl);
   background-color: var(--color-danger-bg);
-  border-bottom: 1px solid var(--color-danger-border);
+  border-bottom: var(--border-width-thin) solid var(--color-danger-border);
   color: var(--color-danger-text);
   font-size: var(--font-size-body-small);
 }
 
 .alert-icon {
-  width: 18px;
-  height: 18px;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
   flex-shrink: 0;
 }
 
@@ -114,7 +109,7 @@
   font-weight: var(--font-weight-semibold);
   color: var(--color-text);
   padding-bottom: var(--spacing-xs);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: var(--border-width-thin) solid var(--color-border);
 }
 
 .form-row {
@@ -138,7 +133,7 @@
 .form-input,
 .form-select,
 .form-textarea {
-  border: 1px solid var(--color-border);
+  border: var(--border-width-thin) solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--spacing-sm) var(--spacing-md);
   font-size: var(--font-size-body);
@@ -149,7 +144,7 @@
   &:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px var(--color-primary-subtle);
+    box-shadow: 0 0 0 var(--ring-focus-width) var(--color-primary-subtle);
   }
 
   &.input-error {
@@ -159,7 +154,7 @@
 
 .form-textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: var(--textarea-min-height);
 }
 
 .error-text {
@@ -173,45 +168,6 @@
   justify-content: flex-end;
   gap: var(--spacing-md);
   padding: var(--spacing-lg) var(--spacing-xxl);
-  border-top: 1px solid var(--color-border);
+  border-top: var(--border-width-thin) solid var(--color-border);
   background-color: var(--color-surface-subtle);
-}
-
-.btn {
-  min-height: var(--control-height);
-  padding: var(--spacing-sm) var(--spacing-xl);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-body);
-  font-weight: var(--font-weight-medium);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  cursor: pointer;
-  transition: all 0.15s ease-in-out;
-
-  &:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
-}
-
-.btn-secondary {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-
-  &:hover:not(:disabled) {
-    background-color: var(--color-surface-hover);
-  }
-}
-
-.btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-primary-foreground);
-  border: 1px solid var(--color-primary);
-
-  &:hover:not(:disabled) {
-    background-color: var(--color-primary-hover);
-  }
 }

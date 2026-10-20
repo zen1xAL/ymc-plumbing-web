@@ -1,3 +1,6 @@
+import { TaskStatus } from './task.model';
+import { HistoryActionType } from './history.model';
+
 export const JOB_TYPES = [
   'Pipe Leak',
   'Clogged Drain',
@@ -17,6 +20,22 @@ export const LEAD_SOURCES = [
 ] as const;
 
 export type LeadSource = (typeof LEAD_SOURCES)[number];
+
+export const TASK_STATUS_OPTIONS: readonly TaskStatus[] = [
+  'New',
+  'In Progress',
+  'Completed',
+  'Cancelled'
+] as const;
+
+export const HISTORY_ACTION_TYPES: readonly HistoryActionType[] = [
+  'CREATE',
+  'STATUS_CHANGE',
+  'EDIT',
+  'ATTACHMENT_ADD',
+  'ATTACHMENT_REMOVE',
+  'DELETE'
+] as const;
 
 export const DEFAULT_SCHEDULE_DELAY_HOURS = 1;
 export const DEFAULT_JOB_DURATION_HOURS = 2;
