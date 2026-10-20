@@ -1,0 +1,342 @@
+.app-header {
+  height: var(--header-height);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-xl);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.logo-icon {
+  font-size: var(--font-size-title-large);
+}
+
+.brand-title {
+  font-size: var(--font-size-title-small);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  line-height: var(--line-height-tight);
+}
+
+.brand-subtitle {
+  font-size: var(--font-size-caption-small);
+  color: var(--color-text-subtle);
+}
+
+.candidate-badge {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary-text);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  transition: all 0.15s ease-in-out;
+  min-height: 40px;
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+    color: var(--color-text);
+  }
+
+  &.active {
+    background-color: var(--color-surface-subtle);
+    color: var(--color-primary-text);
+    font-weight: var(--font-weight-semibold);
+    border-bottom: 2px solid var(--color-primary);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+}
+
+.nav-count {
+  font-size: var(--font-size-caption-small);
+  font-weight: var(--font-weight-bold);
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-status-new-bg);
+  color: var(--color-status-new-text);
+
+  &.badge-accent {
+    background-color: var(--color-primary-subtle);
+    color: var(--color-primary-text);
+  }
+
+  &.badge-neutral {
+    background-color: var(--color-surface-hover);
+    color: var(--color-text-muted);
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.server-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-subtle);
+  font-family: var(--font-mono);
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-success);
+  box-shadow: 0 0 6px var(--color-success);
+}
+
+.theme-toggle-btn {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface-subtle);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+  }
+}
+
+.app-main {
+  min-height: calc(100vh - var(--header-height));
+  padding: var(--spacing-xl);
+  background-color: var(--color-bg);
+}
+
+.main-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+.view-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.panel-title {
+  font-size: var(--font-size-title-medium);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.panel-desc {
+  font-size: var(--font-size-body-small);
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-xs);
+}
+
+.summary-pills {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.pill {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+
+  &.pill-new {
+    background-color: var(--color-status-new-bg);
+    color: var(--color-status-new-text);
+    border-color: var(--color-status-new-border);
+  }
+
+  &.pill-progress {
+    background-color: var(--color-status-in-progress-bg);
+    color: var(--color-status-in-progress-text);
+    border-color: var(--color-status-in-progress-border);
+  }
+
+  &.pill-completed {
+    background-color: var(--color-status-completed-bg);
+    color: var(--color-status-completed-text);
+    border-color: var(--color-status-completed-border);
+  }
+}
+
+.status-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.overview-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-border-strong);
+  }
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.job-id {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-subtle);
+}
+
+.status-badge {
+  font-size: var(--font-size-caption-small);
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+
+  &.status-new {
+    background-color: var(--color-status-new-bg);
+    color: var(--color-status-new-text);
+    border-color: var(--color-status-new-border);
+  }
+
+  &.status-in-progress {
+    background-color: var(--color-status-in-progress-bg);
+    color: var(--color-status-in-progress-text);
+    border-color: var(--color-status-in-progress-border);
+  }
+
+  &.status-completed {
+    background-color: var(--color-status-completed-bg);
+    color: var(--color-status-completed-text);
+    border-color: var(--color-status-completed-border);
+  }
+
+  &.status-cancelled {
+    background-color: var(--color-status-cancelled-bg);
+    color: var(--color-status-cancelled-text);
+    border-color: var(--color-status-cancelled-border);
+  }
+}
+
+.job-title {
+  font-size: var(--font-size-title-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.job-address {
+  font-size: var(--font-size-body-small);
+  color: var(--color-text-muted);
+}
+
+.job-desc {
+  font-size: var(--font-size-body-small);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-normal);
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-subtle);
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.history-item {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.history-time {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-subtle);
+  min-width: 160px;
+}
+
+.history-action-badge {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-caption-small);
+  font-weight: var(--font-weight-bold);
+  padding: 2px 6px;
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+  border-radius: var(--radius-xs);
+}
+
+.history-text {
+  font-size: var(--font-size-body);
+  color: var(--color-text);
+}

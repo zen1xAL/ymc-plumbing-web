@@ -1,0 +1,144 @@
+<header class="app-header">
+  <div class="header-brand">
+    <div class="brand-logo">
+      <span class="logo-icon">🚰</span>
+      <div class="brand-text">
+        <h1 class="brand-title">YMC Plumbing</h1>
+        <span class="brand-subtitle">Диспетчерская служба (CRM & FMS)</span>
+      </div>
+    </div>
+    <span class="candidate-badge">{{ candidateCode }}</span>
+  </div>
+
+  <nav class="header-nav">
+    <button
+      type="button"
+      class="nav-item"
+      [class.active]="activeTab() === 'crm'"
+      (click)="setTab('crm')"
+    >
+      <span class="nav-label">CRM – Заявки клиентов</span>
+      <span class="nav-count" *ngIf="leadService.newLeads().length > 0">
+        {{ leadService.newLeads().length }}
+      </span>
+    </button>
+
+    <button
+      type="button"
+      class="nav-item"
+      [class.active]="activeTab() === 'fms'"
+      (click)="setTab('fms')"
+    >
+      <span class="nav-label">FMS – Активные наряды</span>
+      <span class="nav-count badge-accent">
+        {{ jobService.activeJobs().length }}
+      </span>
+    </button>
+
+    <button
+      type="button"
+      class="nav-item"
+      [class.active]="activeTab() === 'history'"
+      (click)="setTab('history')"
+    >
+      <span class="nav-label">Журнал аудита</span>
+      <span class="nav-count badge-neutral">
+        {{ historyService.count() }}
+      </span>
+    </button>
+  </nav>
+
+  <div class="header-actions">
+    <div class="server-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">Сервер :3000</span>
+    </div>
+
+    <button
+      type="button"
+      class="theme-toggle-btn"
+      (click)="toggleTheme()"
+      [title]="themeService.currentTheme() === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'"
+    >
+      <span *ngIf="themeService.currentTheme() === 'light'">🌙 Тёмная</span>
+      <span *ngIf="themeService.currentTheme() === 'dark'">☀️ Светлая</span>
+    </button>
+  </div>
+</header>
+
+<main class="app-main">
+  <section class="main-container">
+    <div *ngIf="activeTab() === 'fms'" class="view-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">FMS – Управление выездными нарядами</h2>
+          <p class="panel-desc">Синхронизация в реальном времени с мобильными устройствами мастеров</p>
+        </div>
+        <div class="summary-pills">
+          <span class="pill pill-new">Новых: {{ jobService.newJobs().length }}</span>
+          <span class="pill pill-progress">В работе: {{ jobService.inProgressJobs().length }}</span>
+          <span class="pill pill-completed">Завершено: {{ jobService.completedJobs().length }}</span>
+        </div>
+      </div>
+
+      <div class="status-overview-grid">
+        <div class="overview-card" *ngFor="let job of jobService.jobs()">
+          <div class="card-top">
+            <span class="job-id">{{ job.id }}</span>
+            <span class="status-badge" [ngClass]="'status-' + job.status.toLowerCase().replace(' ', '-')">
+              {{ job.status }}
+            </span>
+          </div>
+          <h3 class="job-title">{{ job.title }}</h3>
+          <p class="job-address">📍 {{ job.location.address }}</p>
+          <div class="card-meta">
+            <span class="meta-item">👨‍🔧 {{ job.assignedTechnician || 'Не назначен' }}</span>
+            <span class="meta-item">🕒 {{ job.dueDate | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab() === 'crm'" class="view-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">CRM – Входящие обращения клиентов</h2>
+          <p class="panel-desc">Обработка первичных лидов и конвертация в выездные наряды</p>
+        </div>
+      </div>
+
+      <div class="status-overview-grid">
+        <div class="overview-card" *ngFor="let lead of leadService.leads()">
+          <div class="card-top">
+            <span class="job-id">{{ lead.id }}</span>
+            <span class="status-badge status-new">{{ lead.status }}</span>
+          </div>
+          <h3 class="job-title">{{ lead.jobType }} – {{ lead.client.firstName }} {{ lead.client.lastName }}</h3>
+          <p class="job-address">📍 {{ lead.address }}</p>
+          <p class="job-desc">{{ lead.description }}</p>
+          <div class="card-meta">
+            <span class="meta-item">📞 {{ lead.client.phone }}</span>
+            <span class="meta-item">🌐 {{ lead.source }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab() === 'history'" class="view-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">Журнал аудита операций</h2>
+          <p class="panel-desc">Сквозной хронологический лог действий диспетчера и мобильных сотрудников</p>
+        </div>
+      </div>
+
+      <div class="history-list">
+        <div class="history-item" *ngFor="let item of historyService.history()">
+          <div class="history-time">{{ item.timestamp | date:'medium' }}</div>
+          <div class="history-action-badge">{{ item.actionType }}</div>
+          <div class="history-text">{{ item.description }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
