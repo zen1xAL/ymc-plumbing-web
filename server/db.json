@@ -1,0 +1,259 @@
+{
+  "leads": [
+    {
+      "id": "lead-1",
+      "client": {
+        "firstName": "John",
+        "lastName": "Smith",
+        "phone": "+1 (555) 234-5678",
+        "email": "john.smith@example.com"
+      },
+      "jobType": "Pipe Leak",
+      "source": "Website",
+      "address": "742 Evergreen Terrace, Springfield, OR 97477",
+      "city": "Springfield",
+      "zipCode": "97477",
+      "description": "Активная протечка медной трубы под кухонной раковиной. Вода перекрыта вентилем, требуется замена участка трубы и фитинга.",
+      "status": "New",
+      "createdAt": "2026-10-20T14:30:00.000Z"
+    },
+    {
+      "id": "lead-2",
+      "client": {
+        "firstName": "Sarah",
+        "lastName": "Connor",
+        "phone": "+1 (555) 876-5432",
+        "email": "s.connor@cyberdyne.io"
+      },
+      "jobType": "Clogged Drain",
+      "source": "Phone",
+      "address": "1000 Ocean Drive, Miami Beach, FL 33139",
+      "city": "Miami Beach",
+      "zipCode": "33139",
+      "description": "Глубокий засор главного канализационного стояка частного дома. Механическая прочистка тросом не помогла, требуется гидродинамика.",
+      "status": "New",
+      "createdAt": "2026-10-20T15:10:00.000Z"
+    },
+    {
+      "id": "lead-3",
+      "client": {
+        "firstName": "Robert",
+        "lastName": "Davis",
+        "phone": "+1 (555) 345-6789",
+        "email": "rdavis@metro-build.com"
+      },
+      "jobType": "Water Heater",
+      "source": "Google Ads",
+      "address": "450 Lexington Ave, New York, NY 10017",
+      "city": "New York",
+      "zipCode": "10017",
+      "description": "Электрический водонагреватель на 200л шумит при нагреве и выбивает дифференциальный автомат. Необходима диагностика ТЭНа.",
+      "status": "New",
+      "createdAt": "2026-10-20T16:00:00.000Z"
+    },
+    {
+      "id": "lead-4",
+      "client": {
+        "firstName": "Emily",
+        "lastName": "Taylor",
+        "phone": "+1 (555) 901-2345",
+        "email": "emily.t@gmail.com"
+      },
+      "jobType": "Inspection",
+      "source": "Referral",
+      "address": "120 Pine Street, Seattle, WA 98101",
+      "city": "Seattle",
+      "zipCode": "98101",
+      "description": "Комплексный плановый осмотр сантехнических коммуникаций, редукторов давления и запорной арматуры перед чистовой отделкой.",
+      "status": "New",
+      "createdAt": "2026-10-20T17:20:00.000Z"
+    },
+    {
+      "id": "lead-5",
+      "client": {
+        "firstName": "Michael",
+        "lastName": "Brown",
+        "phone": "+1 (555) 678-1234",
+        "email": "mbrown99@outlook.com"
+      },
+      "jobType": "Emergency Repair",
+      "source": "Walk-in",
+      "address": "88 Elm Street, Boston, MA 02108",
+      "city": "Boston",
+      "zipCode": "02108",
+      "description": "Аварийный свищ на чугунном стояке в подвальном помещении. Требуется срочная установка ремонтного хомута или замена раструба.",
+      "status": "New",
+      "createdAt": "2026-10-20T18:05:00.000Z"
+    }
+  ],
+  "technicians": [
+    {
+      "id": "tech-1",
+      "name": "Mike Johnson",
+      "specialization": "Ведущий сантехник / Устранение аварийных протечек",
+      "phone": "+1 (555) 111-2233",
+      "active": true
+    },
+    {
+      "id": "tech-2",
+      "name": "Alex Rivera",
+      "specialization": "Специалист по канализации и гидродинамической прочистке",
+      "phone": "+1 (555) 444-5566",
+      "active": true
+    },
+    {
+      "id": "tech-3",
+      "name": "John Doe",
+      "specialization": "Мастер по водонагревателям, котлам и отопительным системам",
+      "phone": "+1 (555) 777-8899",
+      "active": true
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Pipe Leak – John Smith",
+      "description": "Аварийная замена медного колена и подмотка соединений под мойкой на объекте. Клиент предупрежден о прибытии мастера.",
+      "dueDate": "2026-10-21T18:00:00.000Z",
+      "status": "New",
+      "location": {
+        "address": "742 Evergreen Terrace, Springfield, OR 97477",
+        "latitude": 53.9006,
+        "longitude": 27.559
+      },
+      "attachments": [],
+      "syncStatus": "synced",
+      "createdAt": "2026-10-20T14:40:00.000Z",
+      "updatedAt": "2026-10-20T14:40:00.000Z",
+      "client": {
+        "firstName": "John",
+        "lastName": "Smith",
+        "phone": "+1 (555) 234-5678",
+        "email": "john.smith@example.com"
+      },
+      "jobType": "Pipe Leak",
+      "source": "Website",
+      "assignedTechnician": "Mike Johnson",
+      "scheduledTime": {
+        "start": "2026-10-21T16:00:00.000Z",
+        "end": "2026-10-21T18:00:00.000Z"
+      }
+    },
+    {
+      "id": "task-2",
+      "title": "Clogged Drain – Sarah Connor",
+      "description": "Гидродинамическая промывка канализационной трубы 110мм с применением роторной насадки. Работы выполняются на выезде.",
+      "dueDate": "2026-10-21T14:00:00.000Z",
+      "status": "In Progress",
+      "location": {
+        "address": "1000 Ocean Drive, Miami Beach, FL 33139",
+        "latitude": 53.9312,
+        "longitude": 27.493
+      },
+      "attachments": [],
+      "syncStatus": "synced",
+      "createdAt": "2026-10-20T15:20:00.000Z",
+      "updatedAt": "2026-10-20T16:45:00.000Z",
+      "client": {
+        "firstName": "Sarah",
+        "lastName": "Connor",
+        "phone": "+1 (555) 876-5432",
+        "email": "s.connor@cyberdyne.io"
+      },
+      "jobType": "Clogged Drain",
+      "source": "Phone",
+      "assignedTechnician": "Alex Rivera",
+      "scheduledTime": {
+        "start": "2026-10-21T12:00:00.000Z",
+        "end": "2026-10-21T14:00:00.000Z"
+      }
+    },
+    {
+      "id": "task-3",
+      "title": "Water Heater – Robert Davis",
+      "description": "Замена магниевого анода и нагревательного элемента ТЭН в накопительном водонагревателе. Проверка герметичности проведена.",
+      "dueDate": "2026-10-20T12:00:00.000Z",
+      "status": "Completed",
+      "location": {
+        "address": "450 Lexington Ave, New York, NY 10017",
+        "latitude": 53.9085,
+        "longitude": 27.4862
+      },
+      "attachments": [],
+      "syncStatus": "synced",
+      "createdAt": "2026-10-20T10:00:00.000Z",
+      "updatedAt": "2026-10-20T12:15:00.000Z",
+      "client": {
+        "firstName": "Robert",
+        "lastName": "Davis",
+        "phone": "+1 (555) 345-6789",
+        "email": "rdavis@metro-build.com"
+      },
+      "jobType": "Water Heater",
+      "source": "Google Ads",
+      "assignedTechnician": "John Doe",
+      "scheduledTime": {
+        "start": "2026-10-20T10:30:00.000Z",
+        "end": "2026-10-20T12:00:00.000Z"
+      }
+    }
+  ],
+  "history": [
+    {
+      "id": "hist-1792522236033-jy0gk",
+      "actionType": "DELETE",
+      "description": "Удален наряд «Emergency Burst – Michael Brown»",
+      "timestamp": "2026-10-20T18:50:36.033Z",
+      "taskId": "task-1792522236020-uzz3q",
+      "taskTitle": "Emergency Burst – Michael Brown"
+    },
+    {
+      "id": "hist-1792522236026-hl9y6",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Emergency Burst – Michael Brown» изменен на «In Progress» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-20T18:50:36.026Z",
+      "taskId": "task-1792522236020-uzz3q",
+      "taskTitle": "Emergency Burst – Michael Brown"
+    },
+    {
+      "id": "hist-1792522236020-v1hcf",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Emergency Burst – Michael Brown» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-20T18:50:36.020Z",
+      "taskId": "task-1792522236020-uzz3q",
+      "taskTitle": "Emergency Burst – Michael Brown"
+    },
+    {
+      "id": "hist-1",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Pipe Leak – John Smith» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-20T14:40:00.000Z",
+      "taskId": "task-1",
+      "taskTitle": "Pipe Leak – John Smith"
+    },
+    {
+      "id": "hist-2",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Clogged Drain – Sarah Connor» (Мастер: Alex Rivera)",
+      "timestamp": "2026-10-20T15:20:00.000Z",
+      "taskId": "task-2",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-3",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Clogged Drain – Sarah Connor» изменен на «In Progress» (Мастер: Alex Rivera)",
+      "timestamp": "2026-10-20T16:45:00.000Z",
+      "taskId": "task-2",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-4",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Water Heater – Robert Davis» изменен на «Completed» (Мастер: John Doe)",
+      "timestamp": "2026-10-20T12:15:00.000Z",
+      "taskId": "task-3",
+      "taskTitle": "Water Heater – Robert Davis"
+    }
+  ]
+}
