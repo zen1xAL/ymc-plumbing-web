@@ -19,9 +19,14 @@ export interface CreateJobFormData {
   source: string;
   address: string;
   city?: string | null;
+  state?: string | null;
   zipCode?: string | null;
+  area?: string | null;
   assignedTechnician: string;
-  scheduledStart: string;
+  scheduledDate?: string | null;
+  scheduledStartTime?: string | null;
+  scheduledEndTime?: string | null;
+  scheduledStart?: string | null;
   scheduledEnd?: string | null;
   description?: string | null;
 }
@@ -56,14 +61,32 @@ export class JobMapper {
   }
 
   static mapFormDataToInput(formData: CreateJobFormData): CreateJobInput {
-    const startDate = new Date(formData.scheduledStart);
-    const endDate = formData.scheduledEnd
-      ? new Date(formData.scheduledEnd)
-      : new Date(startDate.getTime() + DEFAULT_JOB_DURATION_HOURS * 60 * 60 * 1000);
+    let startDate: Date;
+    if (formData.scheduledDate && formData.scheduledStartTime) {
+      startDate = new Date(`${formData.scheduledDate}T${formData.scheduledStartTime}`);
+    } else if (formData.scheduledStart) {
+      startDate = new Date(formData.scheduledStart);
+    } else {
+      startDate = new Date();
+    }
+
+    let endDate: Date;
+    if (formData.scheduledDate && formData.scheduledEndTime) {
+      endDate = new Date(`${formData.scheduledDate}T${formData.scheduledEndTime}`);
+    } else if (formData.scheduledEnd) {
+      endDate = new Date(formData.scheduledEnd);
+    } else {
+      endDate = new Date(startDate.getTime() + DEFAULT_JOB_DURATION_HOURS * 60 * 60 * 1000);
+    }
 
     const city = formData.city?.trim() || DEFAULT_CITY;
     const zipCode = formData.zipCode?.trim() || DEFAULT_ZIP;
-    const fullAddress = [formData.address.trim(), city, zipCode].filter(Boolean).join(', ');
+    const fullAddressParts = [formData.address.trim(), city];
+    if (formData.state?.trim()) {
+      fullAddressParts.push(formData.state.trim());
+    }
+    fullAddressParts.push(zipCode);
+    const fullAddress = fullAddressParts.filter(Boolean).join(', ');
 
     const location = this.calculateCoordinates(formData.address, city);
     location.address = fullAddress;

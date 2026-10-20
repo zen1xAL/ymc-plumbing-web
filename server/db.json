@@ -1,7 +1,7 @@
 {
   "leads": [
     {
-      "id": "lead-1",
+      "id": "L-201",
       "client": {
         "firstName": "John",
         "lastName": "Smith",
@@ -18,7 +18,7 @@
       "createdAt": "2026-10-20T14:30:00.000Z"
     },
     {
-      "id": "lead-2",
+      "id": "L-202",
       "client": {
         "firstName": "Sarah",
         "lastName": "Connor",
@@ -35,7 +35,7 @@
       "createdAt": "2026-10-20T15:10:00.000Z"
     },
     {
-      "id": "lead-3",
+      "id": "L-203",
       "client": {
         "firstName": "Robert",
         "lastName": "Davis",
@@ -52,7 +52,7 @@
       "createdAt": "2026-10-20T16:00:00.000Z"
     },
     {
-      "id": "lead-4",
+      "id": "L-204",
       "client": {
         "firstName": "Emily",
         "lastName": "Taylor",
@@ -69,7 +69,7 @@
       "createdAt": "2026-10-20T17:20:00.000Z"
     },
     {
-      "id": "lead-5",
+      "id": "L-205",
       "client": {
         "firstName": "Michael",
         "lastName": "Brown",
@@ -111,7 +111,7 @@
   ],
   "tasks": [
     {
-      "id": "task-1",
+      "id": "#101",
       "title": "Pipe Leak – John Smith",
       "description": "Аварийная замена медного колена и подмотка соединений под мойкой на объекте. Клиент предупрежден о прибытии мастера.",
       "dueDate": "2026-10-21T18:00:00.000Z",
@@ -140,7 +140,7 @@
       }
     },
     {
-      "id": "task-2",
+      "id": "#102",
       "title": "Clogged Drain – Sarah Connor",
       "description": "Гидродинамическая промывка канализационной трубы 110мм с применением роторной насадки. Работы выполняются на выезде.",
       "dueDate": "2026-10-21T14:00:00.000Z",
@@ -169,7 +169,7 @@
       }
     },
     {
-      "id": "task-3",
+      "id": "#103",
       "title": "Water Heater – Robert Davis",
       "description": "Замена магниевого анода и нагревательного элемента ТЭН в накопительном водонагревателе. Проверка герметичности проведена.",
       "dueDate": "2026-10-20T12:00:00.000Z",
@@ -200,35 +200,11 @@
   ],
   "history": [
     {
-      "id": "hist-1792522236033-jy0gk",
-      "actionType": "DELETE",
-      "description": "Удален наряд «Emergency Burst – Michael Brown»",
-      "timestamp": "2026-10-20T18:50:36.033Z",
-      "taskId": "task-1792522236020-uzz3q",
-      "taskTitle": "Emergency Burst – Michael Brown"
-    },
-    {
-      "id": "hist-1792522236026-hl9y6",
-      "actionType": "STATUS_CHANGE",
-      "description": "Статус наряда «Emergency Burst – Michael Brown» изменен на «In Progress» (Мастер: Mike Johnson)",
-      "timestamp": "2026-10-20T18:50:36.026Z",
-      "taskId": "task-1792522236020-uzz3q",
-      "taskTitle": "Emergency Burst – Michael Brown"
-    },
-    {
-      "id": "hist-1792522236020-v1hcf",
-      "actionType": "CREATE",
-      "description": "Создан наряд «Emergency Burst – Michael Brown» (Мастер: Mike Johnson)",
-      "timestamp": "2026-10-20T18:50:36.020Z",
-      "taskId": "task-1792522236020-uzz3q",
-      "taskTitle": "Emergency Burst – Michael Brown"
-    },
-    {
       "id": "hist-1",
       "actionType": "CREATE",
       "description": "Создан наряд «Pipe Leak – John Smith» (Мастер: Mike Johnson)",
       "timestamp": "2026-10-20T14:40:00.000Z",
-      "taskId": "task-1",
+      "taskId": "#101",
       "taskTitle": "Pipe Leak – John Smith"
     },
     {
@@ -236,7 +212,7 @@
       "actionType": "CREATE",
       "description": "Создан наряд «Clogged Drain – Sarah Connor» (Мастер: Alex Rivera)",
       "timestamp": "2026-10-20T15:20:00.000Z",
-      "taskId": "task-2",
+      "taskId": "#102",
       "taskTitle": "Clogged Drain – Sarah Connor"
     },
     {
@@ -244,15 +220,23 @@
       "actionType": "STATUS_CHANGE",
       "description": "Статус наряда «Clogged Drain – Sarah Connor» изменен на «In Progress» (Мастер: Alex Rivera)",
       "timestamp": "2026-10-20T16:45:00.000Z",
-      "taskId": "task-2",
+      "taskId": "#102",
       "taskTitle": "Clogged Drain – Sarah Connor"
     },
     {
       "id": "hist-4",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Water Heater – Robert Davis» (Мастер: John Doe)",
+      "timestamp": "2026-10-20T10:00:00.000Z",
+      "taskId": "#103",
+      "taskTitle": "Water Heater – Robert Davis"
+    },
+    {
+      "id": "hist-5",
       "actionType": "STATUS_CHANGE",
       "description": "Статус наряда «Water Heater – Robert Davis» изменен на «Completed» (Мастер: John Doe)",
       "timestamp": "2026-10-20T12:15:00.000Z",
-      "taskId": "task-3",
+      "taskId": "#103",
       "taskTitle": "Water Heater – Robert Davis"
     }
   ]

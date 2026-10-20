@@ -6,7 +6,7 @@ import { TechnicianService } from '@core/services/technician.service';
 import { HistoryService } from '@core/services/history.service';
 import { JobFilter } from '@core/services/job.filter';
 import { Task, TaskStatus } from '@core/models/task.model';
-import { TASK_STATUS_OPTIONS } from '@core/models/constants';
+import { TASK_STATUS_OPTIONS, TASK_STATUS_LABELS, JOB_TYPE_LABELS } from '@core/models/constants';
 import { HistoryLogItem } from '@core/models/history.model';
 
 @Component({
@@ -43,6 +43,15 @@ export class FmsBoardComponent {
     if (!job) return [];
     return this.historyService.history().filter((h) => h.taskId === job.id);
   });
+
+  getStatusLabel(status: TaskStatus): string {
+    return TASK_STATUS_LABELS[status] ?? status;
+  }
+
+  getJobTypeLabel(type?: string): string {
+    if (!type) return '';
+    return JOB_TYPE_LABELS[type] ?? type;
+  }
 
   setStatusFilter(status: 'ALL' | TaskStatus): void {
     this.selectedStatus.set(status);

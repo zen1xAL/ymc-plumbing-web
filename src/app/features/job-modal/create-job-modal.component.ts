@@ -8,8 +8,13 @@ import { Task } from '@core/models/task.model';
 import {
   JOB_TYPES,
   LEAD_SOURCES,
+  SERVICE_AREAS,
+  SOURCE_LABELS,
+  JOB_TYPE_LABELS,
   DEFAULT_CITY,
+  DEFAULT_STATE,
   DEFAULT_ZIP,
+  DEFAULT_AREA,
   DEFAULT_SCHEDULE_DELAY_HOURS,
   DEFAULT_JOB_DURATION_HOURS
 } from '@core/models/constants';
@@ -39,6 +44,7 @@ export class CreateJobModalComponent {
 
   readonly jobTypes = JOB_TYPES;
   readonly leadSources = LEAD_SOURCES;
+  readonly serviceAreas = SERVICE_AREAS;
 
   readonly jobForm: FormGroup = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(2)]],
@@ -47,13 +53,16 @@ export class CreateJobModalComponent {
     email: ['', [Validators.email]],
     jobType: [JOB_TYPES[0], [Validators.required]],
     source: [LEAD_SOURCES[0], [Validators.required]],
+    description: [''],
     address: ['', [Validators.required, Validators.minLength(5)]],
     city: [DEFAULT_CITY],
+    state: [DEFAULT_STATE],
     zipCode: [DEFAULT_ZIP],
-    assignedTechnician: ['', [Validators.required]],
-    scheduledStart: ['', [Validators.required]],
-    scheduledEnd: [''],
-    description: ['']
+    area: [DEFAULT_AREA],
+    scheduledDate: ['', [Validators.required]],
+    scheduledStartTime: ['', [Validators.required]],
+    scheduledEndTime: [''],
+    assignedTechnician: ['', [Validators.required]]
   });
 
   constructor() {
@@ -66,6 +75,14 @@ export class CreateJobModalComponent {
     });
   }
 
+  getJobTypeLabel(type: string): string {
+    return JOB_TYPE_LABELS[type] ?? type;
+  }
+
+  getSourceLabel(source: string): string {
+    return SOURCE_LABELS[source] ?? source;
+  }
+
   private resetAndPopulateForm(lead: Lead | null): void {
     this.errorMessage.set(null);
     this.isSubmitting.set(false);
@@ -74,10 +91,10 @@ export class CreateJobModalComponent {
     const start = new Date(now.getTime() + DEFAULT_SCHEDULE_DELAY_HOURS * 60 * 60 * 1000);
     const end = new Date(start.getTime() + DEFAULT_JOB_DURATION_HOURS * 60 * 60 * 1000);
 
-    const formatForInput = (d: Date) => {
-      const pad = (n: number) => n.toString().padStart(2, '0');
-      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-    };
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const dateStr = `${start.getFullYear()}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}`;
+    const startTimeStr = `${pad(start.getHours())}:${pad(start.getMinutes())}`;
+    const endTimeStr = `${pad(end.getHours())}:${pad(end.getMinutes())}`;
 
     const activeTechs = this.technicianService.activeTechnicians();
     const defaultTech = activeTechs.length > 0 ? activeTechs[0].name : '';
@@ -90,13 +107,16 @@ export class CreateJobModalComponent {
         email: lead.client.email || '',
         jobType: lead.jobType || JOB_TYPES[0],
         source: lead.source || LEAD_SOURCES[0],
+        description: lead.description || '',
         address: lead.address,
         city: lead.city || DEFAULT_CITY,
+        state: DEFAULT_STATE,
         zipCode: lead.zipCode || DEFAULT_ZIP,
-        assignedTechnician: defaultTech,
-        scheduledStart: formatForInput(start),
-        scheduledEnd: formatForInput(end),
-        description: lead.description || ''
+        area: DEFAULT_AREA,
+        scheduledDate: dateStr,
+        scheduledStartTime: startTimeStr,
+        scheduledEndTime: endTimeStr,
+        assignedTechnician: defaultTech
       });
     } else {
       this.jobForm.reset({
@@ -106,13 +126,16 @@ export class CreateJobModalComponent {
         email: '',
         jobType: JOB_TYPES[0],
         source: LEAD_SOURCES[1],
+        description: '',
         address: '',
         city: DEFAULT_CITY,
+        state: DEFAULT_STATE,
         zipCode: DEFAULT_ZIP,
-        assignedTechnician: defaultTech,
-        scheduledStart: formatForInput(start),
-        scheduledEnd: formatForInput(end),
-        description: ''
+        area: DEFAULT_AREA,
+        scheduledDate: dateStr,
+        scheduledStartTime: startTimeStr,
+        scheduledEndTime: endTimeStr,
+        assignedTechnician: defaultTech
       });
     }
   }

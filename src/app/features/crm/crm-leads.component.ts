@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { LeadService } from '@core/services/lead.service';
 import { LeadFilter } from '@core/services/lead.filter';
 import { Lead, LeadStatus } from '@core/models/lead.model';
+import { SOURCE_LABELS, JOB_TYPE_LABELS } from '@core/models/constants';
 
 @Component({
   selector: 'app-crm-leads',
@@ -28,6 +29,14 @@ export class CrmLeadsComponent {
 
     return leads.filter((lead) => LeadFilter.matches(lead, query, status));
   });
+
+  getSourceLabel(source: string): string {
+    return SOURCE_LABELS[source] ?? source;
+  }
+
+  getJobTypeLabel(type: string): string {
+    return JOB_TYPE_LABELS[type] ?? type;
+  }
 
   setStatusFilter(status: 'ALL' | LeadStatus): void {
     this.selectedStatus.set(status);

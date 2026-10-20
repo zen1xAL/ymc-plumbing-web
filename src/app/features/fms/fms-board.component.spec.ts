@@ -12,7 +12,7 @@ describe('FmsBoardComponent', () => {
 
   const mockTasks: Task[] = [
     {
-      id: 'task-1',
+      id: '#101',
       title: 'Pipe Leak – Alice',
       description: 'Leak in basement',
       dueDate: '2026-10-21T18:00:00.000Z',
@@ -26,7 +26,7 @@ describe('FmsBoardComponent', () => {
       assignedTechnician: 'Mike Johnson'
     },
     {
-      id: 'task-2',
+      id: '#102',
       title: 'Clogged Drain – Bob',
       description: 'Drain blocked',
       dueDate: '2026-10-21T14:00:00.000Z',
@@ -40,7 +40,7 @@ describe('FmsBoardComponent', () => {
       assignedTechnician: 'Alex Rivera'
     },
     {
-      id: 'task-3',
+      id: '#103',
       title: 'Water Heater – Charlie',
       description: 'Heater inspection',
       dueDate: '2026-10-20T12:00:00.000Z',
@@ -83,11 +83,11 @@ describe('FmsBoardComponent', () => {
   it('should filter jobs by status', () => {
     component.setStatusFilter('In Progress');
     expect(component.filteredJobs().length).toBe(1);
-    expect(component.filteredJobs()[0].id).toBe('task-2');
+    expect(component.filteredJobs()[0].id).toBe('#102');
 
     component.setStatusFilter('Completed');
     expect(component.filteredJobs().length).toBe(1);
-    expect(component.filteredJobs()[0].id).toBe('task-3');
+    expect(component.filteredJobs()[0].id).toBe('#103');
   });
 
   it('should filter jobs by assigned technician', () => {
@@ -96,22 +96,22 @@ describe('FmsBoardComponent', () => {
 
     component.setTechnicianFilter('Alex Rivera');
     expect(component.filteredJobs().length).toBe(1);
-    expect(component.filteredJobs()[0].id).toBe('task-2');
+    expect(component.filteredJobs()[0].id).toBe('#102');
   });
 
   it('should filter jobs by search query in client name, title or address', () => {
     component.onSearchChange('Alice');
     expect(component.filteredJobs().length).toBe(1);
-    expect(component.filteredJobs()[0].id).toBe('task-1');
+    expect(component.filteredJobs()[0].id).toBe('#101');
 
     component.onSearchChange('Pine Rd');
     expect(component.filteredJobs().length).toBe(1);
-    expect(component.filteredJobs()[0].id).toBe('task-3');
+    expect(component.filteredJobs()[0].id).toBe('#103');
   });
 
   it('should open and close job details drawer', () => {
     component.openJobDetails(mockTasks[0]);
-    expect(component.selectedJobForDetails()?.id).toBe('task-1');
+    expect(component.selectedJobForDetails()?.id).toBe('#101');
 
     component.closeJobDetails();
     expect(component.selectedJobForDetails()).toBeNull();

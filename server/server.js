@@ -28,6 +28,55 @@ function writeDb(data) {
   }
 }
 
+function getNextTaskId(db) {
+  let maxNum = 100;
+  for (const t of (db.tasks || [])) {
+    if (typeof t.id === 'string') {
+      const match = t.id.match(/^#?(\d+)$/);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        if (num > maxNum) {
+          maxNum = num;
+        }
+      }
+    }
+  }
+  return `#${maxNum + 1}`;
+}
+
+function getNextLeadId(db) {
+  let maxNum = 200;
+  for (const l of (db.leads || [])) {
+    if (typeof l.id === 'string') {
+      const match = l.id.match(/^L-(\d+)$/i);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        if (num > maxNum) {
+          maxNum = num;
+        }
+      }
+    }
+  }
+  return `L-${maxNum + 1}`;
+}
+
+function findTaskIndex(tasks, idParam) {
+  if (!tasks || !idParam) return -1;
+  const normalizedParam = idParam.trim();
+  const cleanParam = normalizedParam.replace(/^#/, '');
+  return tasks.findIndex((t) => {
+    if (!t.id) return false;
+    const cleanId = t.id.replace(/^#/, '');
+    return t.id === normalizedParam || cleanId === cleanParam;
+  });
+}
+
+function findLeadIndex(leads, idParam) {
+  if (!leads || !idParam) return -1;
+  const normalizedParam = idParam.trim().toLowerCase();
+  return leads.findIndex((l) => l.id && l.id.toLowerCase() === normalizedParam);
+}
+
 async function sendSlackNotification(payload) {
   const webhookUrl = process.env.SLACK_WEBHOOK_URL;
   if (!webhookUrl || !webhookUrl.startsWith('http')) {
@@ -142,11 +191,11 @@ app.get('/tasks', (req, res) => {
 
 app.get('/tasks/:id', (req, res) => {
   const db = readDb();
-  const task = (db.tasks || []).find((t) => t.id === req.params.id);
-  if (!task) {
+  const index = findTaskIndex(db.tasks, req.params.id);
+  if (index === -1) {
     return res.status(404).json({ error: 'Task not found' });
   }
-  res.json(task);
+  res.json(db.tasks[index]);
 });
 
 app.post('/tasks', async (req, res) => {
@@ -154,9 +203,10 @@ app.post('/tasks', async (req, res) => {
   if (!db.tasks) db.tasks = [];
 
   const now = new Date().toISOString();
+  const taskId = req.body.id || getNextTaskId(db);
   const newTask = {
-    id: req.body.id || `task-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-    title: req.body.title || 'Новый наряд',
+    id: taskId,
+    title: req.body.title || `Наряд ${taskId}`,
     description: req.body.description || '',
     dueDate: req.body.dueDate || now,
     status: req.body.status || 'New',
@@ -172,7 +222,7 @@ app.post('/tasks', async (req, res) => {
     scheduledTime: req.body.scheduledTime
   };
 
-  const existingIndex = db.tasks.findIndex((t) => t.id === newTask.id);
+  const existingIndex = findTaskIndex(db.tasks, newTask.id);
   if (existingIndex >= 0) {
     db.tasks[existingIndex] = newTask;
   } else {
@@ -202,10 +252,12 @@ app.post('/tasks', async (req, res) => {
 app.put('/tasks/:id', async (req, res) => {
   const db = readDb();
   if (!db.tasks) db.tasks = [];
-  const index = db.tasks.findIndex((t) => t.id === req.params.id);
+  const index = findTaskIndex(db.tasks, req.params.id);
 
   const existing = index >= 0 ? db.tasks[index] : {};
   const now = new Date().toISOString();
+  const effectiveId = index >= 0 ? db.tasks[index].id : req.params.id;
+
   const updatedTask = {
     ...existing,
     ...req.body,
@@ -213,7 +265,7 @@ app.put('/tasks/:id', async (req, res) => {
       ...(existing.location || {}),
       ...(req.body.location || {})
     },
-    id: req.params.id,
+    id: effectiveId,
     updatedAt: now,
     syncStatus: 'synced'
   };
@@ -247,7 +299,7 @@ app.put('/tasks/:id', async (req, res) => {
 app.patch('/tasks/:id', async (req, res) => {
   const db = readDb();
   if (!db.tasks) db.tasks = [];
-  const index = db.tasks.findIndex((t) => t.id === req.params.id);
+  const index = findTaskIndex(db.tasks, req.params.id);
 
   if (index === -1) {
     return res.status(404).json({ error: 'Task not found' });
@@ -264,7 +316,7 @@ app.patch('/tasks/:id', async (req, res) => {
     location: req.body.location
       ? { ...(existing.location || {}), ...req.body.location }
       : existing.location,
-    id: req.params.id,
+    id: existing.id,
     updatedAt: now,
     syncStatus: 'synced'
   };
@@ -301,7 +353,7 @@ app.patch('/tasks/:id', async (req, res) => {
 app.delete('/tasks/:id', (req, res) => {
   const db = readDb();
   if (!db.tasks) db.tasks = [];
-  const index = db.tasks.findIndex((t) => t.id === req.params.id);
+  const index = findTaskIndex(db.tasks, req.params.id);
 
   if (index === -1) {
     return res.status(404).json({ error: 'Task not found' });
@@ -324,21 +376,22 @@ app.get('/leads', (req, res) => {
 
 app.get('/leads/:id', (req, res) => {
   const db = readDb();
-  const lead = (db.leads || []).find((l) => l.id === req.params.id);
-  if (!lead) {
+  const index = findLeadIndex(db.leads, req.params.id);
+  if (index === -1) {
     return res.status(404).json({ error: 'Lead not found' });
   }
-  res.json(lead);
+  res.json(db.leads[index]);
 });
 
 app.post('/leads', (req, res) => {
   const db = readDb();
   if (!db.leads) db.leads = [];
 
+  const leadId = req.body.id || getNextLeadId(db);
   const newLead = {
-    id: req.body.id || `lead-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    id: leadId,
     client: req.body.client || { firstName: '', lastName: '', phone: '' },
-    jobType: req.body.jobType || 'General Inspection',
+    jobType: req.body.jobType || 'Pipe Leak',
     source: req.body.source || 'Website',
     address: req.body.address || '',
     city: req.body.city || '',
@@ -356,7 +409,7 @@ app.post('/leads', (req, res) => {
 app.patch('/leads/:id', (req, res) => {
   const db = readDb();
   if (!db.leads) db.leads = [];
-  const index = db.leads.findIndex((l) => l.id === req.params.id);
+  const index = findLeadIndex(db.leads, req.params.id);
 
   if (index === -1) {
     return res.status(404).json({ error: 'Lead not found' });
@@ -370,7 +423,7 @@ app.patch('/leads/:id', (req, res) => {
 app.delete('/leads/:id', (req, res) => {
   const db = readDb();
   if (!db.leads) db.leads = [];
-  const index = db.leads.findIndex((l) => l.id === req.params.id);
+  const index = findLeadIndex(db.leads, req.params.id);
 
   if (index === -1) {
     return res.status(404).json({ error: 'Lead not found' });

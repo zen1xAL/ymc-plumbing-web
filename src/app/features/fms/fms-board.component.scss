@@ -65,22 +65,6 @@
     border-color: var(--color-border-hover);
     box-shadow: var(--shadow-md);
   }
-
-  &.status-card-new {
-    border-left: var(--border-width-indicator) solid var(--color-status-new);
-  }
-
-  &.status-card-progress {
-    border-left: var(--border-width-indicator) solid var(--color-status-in-progress);
-  }
-
-  &.status-card-completed {
-    border-left: var(--border-width-indicator) solid var(--color-status-completed);
-  }
-
-  &.status-card-cancelled {
-    border-left: var(--border-width-indicator) solid var(--color-status-cancelled);
-  }
 }
 
 .card-header {
@@ -90,6 +74,7 @@
   padding: var(--spacing-md) var(--spacing-lg);
   border-bottom: var(--border-width-thin) solid var(--color-border);
   background-color: var(--color-surface-subtle);
+  border-top-left-radius: var(--radius-lg);
   border-top-right-radius: var(--radius-lg);
 }
 
@@ -101,22 +86,9 @@
 
 .job-id {
   font-family: var(--font-mono);
-  font-size: var(--font-size-caption-small);
+  font-size: var(--font-size-caption);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary-text);
-}
-
-.sync-tag {
-  font-size: var(--font-size-caption-small);
-  padding: var(--spacing-none) var(--spacing-xs);
-  border-radius: var(--radius-xs);
-  background-color: var(--color-surface-hover);
-  color: var(--color-text-subtle);
-
-  &.sync-synced {
-    color: var(--color-status-completed-text);
-    background-color: var(--color-status-completed-bg);
-  }
+  color: var(--color-text);
 }
 
 .card-body {
@@ -224,37 +196,39 @@
 .btn-status {
   padding: var(--spacing-xs) var(--spacing-sm);
   font-size: var(--font-size-caption-small);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium);
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.12s ease;
-  border: var(--border-width-thin) solid transparent;
+  border: var(--border-width-thin) solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+  }
 }
 
 .btn-progress {
-  background-color: var(--color-status-in-progress-bg);
-  color: var(--color-status-in-progress-text);
-  border-color: var(--color-status-in-progress-border);
+  color: var(--color-warning-text);
+  border-color: var(--color-warning-border);
 
   &:hover {
-    background-color: var(--color-status-in-progress-border);
+    background-color: var(--color-warning-bg);
   }
 }
 
 .btn-complete {
-  background-color: var(--color-status-completed-bg);
-  color: var(--color-status-completed-text);
-  border-color: var(--color-status-completed-border);
+  color: var(--color-success-text);
+  border-color: var(--color-success-border);
 
   &:hover {
-    background-color: var(--color-status-completed-border);
+    background-color: var(--color-success-bg);
   }
 }
 
 .btn-cancel {
-  background-color: transparent;
   color: var(--color-text-subtle);
-  border-color: var(--color-border);
 
   &:hover {
     background-color: var(--color-danger-bg);
@@ -264,7 +238,6 @@
 }
 
 .btn-reopen {
-  background-color: var(--color-surface);
   color: var(--color-primary-text);
   border-color: var(--color-primary);
 
@@ -274,7 +247,7 @@
 }
 
 .btn-details {
-  background-color: transparent;
+  background-color: var(--color-surface);
   border: var(--border-width-thin) solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: var(--spacing-xs) var(--spacing-md);

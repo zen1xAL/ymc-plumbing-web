@@ -14,9 +14,8 @@ export class ThemeService {
 
     if (saved === 'dark' || saved === 'light') {
       this.currentTheme.set(saved);
-    } else if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      this.currentTheme.set(prefersDark ? 'dark' : 'light');
+    } else {
+      this.currentTheme.set('light');
     }
 
     effect(() => {

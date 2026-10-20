@@ -12,14 +12,17 @@ describe('JobMapper', () => {
     source: 'Website',
     address: '742 Evergreen Terrace',
     city: 'Springfield',
+    state: 'OR',
     zipCode: '97477',
+    area: 'Центральный',
     assignedTechnician: 'Mike Johnson',
-    scheduledStart: '2026-10-21T10:00:00.000Z',
-    scheduledEnd: '2026-10-21T12:00:00.000Z',
+    scheduledDate: '2026-10-21',
+    scheduledStartTime: '10:00',
+    scheduledEndTime: '12:00',
     description: 'Active leak under kitchen sink'
   };
 
-  it('should map form data to CreateJobInput with en-dash in title', () => {
+  it('should map 2x2 form data with separate date and time to CreateJobInput', () => {
     const input = JobMapper.mapFormDataToInput(sampleFormData);
 
     expect(input.title).toBe('Pipe Leak – John Smith');
@@ -30,9 +33,9 @@ describe('JobMapper', () => {
     expect(input.jobType).toBe('Pipe Leak');
     expect(input.source).toBe('Website');
     expect(input.assignedTechnician).toBe('Mike Johnson');
-    expect(input.location.address).toBe('742 Evergreen Terrace, Springfield, 97477');
-    expect(input.scheduledTime.start).toBe('2026-10-21T10:00:00.000Z');
-    expect(input.scheduledTime.end).toBe('2026-10-21T12:00:00.000Z');
+    expect(input.location.address).toBe('742 Evergreen Terrace, Springfield, OR, 97477');
+    expect(new Date(input.scheduledTime.start).getHours()).toBe(10);
+    expect(new Date(input.scheduledTime.end).getHours()).toBe(12);
   });
 
   it('should calculate Springfield coordinates for Springfield address', () => {
@@ -61,10 +64,10 @@ describe('JobMapper', () => {
     expect(coords.longitude).toBeLessThan(-122.9);
   });
 
-  it('should automatically set 2-hour window when scheduledEnd is empty', () => {
+  it('should automatically set 2-hour window when scheduledEndTime is omitted', () => {
     const dataWithoutEnd: CreateJobFormData = {
       ...sampleFormData,
-      scheduledEnd: null
+      scheduledEndTime: null
     };
 
     const input = JobMapper.mapFormDataToInput(dataWithoutEnd);
@@ -72,5 +75,25 @@ describe('JobMapper', () => {
     const endMs = new Date(input.scheduledTime.end).getTime();
 
     expect(endMs - startMs).toBe(2 * 60 * 60 * 1000);
+  });
+
+  it('should maintain backward compatibility with legacy scheduledStart format', () => {
+    const legacyData: CreateJobFormData = {
+      firstName: 'Alice',
+      lastName: 'Cooper',
+      phone: '+1 555 999 8888',
+      jobType: 'Inspection',
+      source: 'Phone',
+      address: '100 Main St',
+      city: 'Springfield',
+      zipCode: '97477',
+      assignedTechnician: 'Alex Rivera',
+      scheduledStart: '2026-10-22T09:00:00.000Z',
+      scheduledEnd: '2026-10-22T11:00:00.000Z'
+    };
+
+    const input = JobMapper.mapFormDataToInput(legacyData);
+    expect(input.scheduledTime.start).toBe('2026-10-22T09:00:00.000Z');
+    expect(input.scheduledTime.end).toBe('2026-10-22T11:00:00.000Z');
   });
 });

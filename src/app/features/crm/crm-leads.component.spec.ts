@@ -12,7 +12,7 @@ describe('CrmLeadsComponent', () => {
 
   const mockLeads: Lead[] = [
     {
-      id: 'lead-1',
+      id: 'L-201',
       client: { firstName: 'John', lastName: 'Smith', phone: '+15551234567' },
       jobType: 'Pipe Leak',
       source: 'Website',
@@ -24,7 +24,7 @@ describe('CrmLeadsComponent', () => {
       createdAt: '2026-10-20T10:00:00.000Z'
     },
     {
-      id: 'lead-2',
+      id: 'L-202',
       client: { firstName: 'Sarah', lastName: 'Connor', phone: '+15559876543' },
       jobType: 'Clogged Drain',
       source: 'Phone',
@@ -61,17 +61,17 @@ describe('CrmLeadsComponent', () => {
   it('should filter leads by status', () => {
     component.setStatusFilter('New');
     expect(component.filteredLeads().length).toBe(1);
-    expect(component.filteredLeads()[0].id).toBe('lead-1');
+    expect(component.filteredLeads()[0].id).toBe('L-201');
 
     component.setStatusFilter('Converted');
     expect(component.filteredLeads().length).toBe(1);
-    expect(component.filteredLeads()[0].id).toBe('lead-2');
+    expect(component.filteredLeads()[0].id).toBe('L-202');
   });
 
   it('should filter leads by search query', () => {
     component.onSearchChange('Evergreen');
     expect(component.filteredLeads().length).toBe(1);
-    expect(component.filteredLeads()[0].id).toBe('lead-1');
+    expect(component.filteredLeads()[0].id).toBe('L-201');
   });
 
   it('should emit createJobFromLead when requested', () => {

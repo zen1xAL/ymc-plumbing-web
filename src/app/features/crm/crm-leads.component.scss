@@ -68,7 +68,7 @@
   font-family: var(--font-mono);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-primary-text);
+  color: var(--color-text);
 }
 
 .lead-date {
@@ -111,10 +111,11 @@
 .job-pill {
   display: inline-block;
   font-size: var(--font-size-caption-small);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium);
   padding: var(--spacing-xxs) var(--spacing-sm);
-  background-color: var(--color-primary-subtle);
-  color: var(--color-primary-text);
+  background-color: var(--color-surface-subtle);
+  color: var(--color-text);
+  border: var(--border-width-thin) solid var(--color-border);
   border-radius: var(--radius-sm);
   margin-bottom: var(--spacing-xs);
 }
@@ -152,7 +153,8 @@
   font-weight: var(--font-weight-medium);
   padding: var(--spacing-xxs) var(--spacing-sm);
   border-radius: var(--radius-sm);
-  background-color: var(--color-surface-hover);
+  background-color: var(--color-surface-subtle);
+  border: var(--border-width-thin) solid var(--color-border);
   color: var(--color-text-muted);
 }
 

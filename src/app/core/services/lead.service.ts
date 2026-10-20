@@ -51,7 +51,7 @@ export class LeadService {
   }
 
   updateStatus(id: string, status: LeadStatus): Observable<Lead> {
-    return this.api.patch<Lead>(`/leads/${id}`, { status }).pipe(
+    return this.api.patch<Lead>(`/leads/${encodeURIComponent(id)}`, { status }).pipe(
       tap((updated) => {
         this._leads.update((prev) => prev.map((l) => (l.id === id ? updated : l)));
       })
@@ -59,7 +59,7 @@ export class LeadService {
   }
 
   deleteLead(id: string): Observable<{ success: boolean; id: string }> {
-    return this.api.delete<{ success: boolean; id: string }>(`/leads/${id}`).pipe(
+    return this.api.delete<{ success: boolean; id: string }>(`/leads/${encodeURIComponent(id)}`).pipe(
       tap(() => {
         this._leads.update((prev) => prev.filter((l) => l.id !== id));
       })

@@ -87,7 +87,7 @@
             </td>
 
             <td class="cell-job">
-              <span class="job-pill">{{ lead.jobType }}</span>
+              <span class="job-pill">{{ getJobTypeLabel(lead.jobType) }}</span>
               <p class="job-desc">{{ lead.description }}</p>
             </td>
 
@@ -104,8 +104,8 @@
             </td>
 
             <td class="cell-source">
-              <span class="source-tag" [class.source-website]="lead.source === 'Website'" [class.source-phone]="lead.source === 'Phone'" [class.source-google-ads]="lead.source === 'Google Ads'" [class.source-referral]="lead.source === 'Referral'" [class.source-walk-in]="lead.source === 'Walk-in'">
-                {{ lead.source }}
+              <span class="source-tag">
+                {{ getSourceLabel(lead.source) }}
               </span>
             </td>
 

@@ -80,21 +80,10 @@
 
   <div class="fms-grid">
     @for (job of filteredJobs(); track job.id) {
-      <article
-        class="job-card"
-        [class.status-card-new]="job.status === 'New'"
-        [class.status-card-progress]="job.status === 'In Progress'"
-        [class.status-card-completed]="job.status === 'Completed'"
-        [class.status-card-cancelled]="job.status === 'Cancelled'"
-      >
+      <article class="job-card">
         <header class="card-header">
           <div class="card-identity">
             <span class="job-id">{{ job.id }}</span>
-            @if (job.syncStatus) {
-              <span class="sync-tag" [class.sync-synced]="job.syncStatus === 'synced'">
-                {{ job.syncStatus === 'synced' ? 'Синхронизирован' : 'Ожидание' }}
-              </span>
-            }
           </div>
 
           <span
@@ -104,7 +93,7 @@
             [class.status-completed]="job.status === 'Completed'"
             [class.status-cancelled]="job.status === 'Cancelled'"
           >
-            {{ job.status === 'New' ? 'Новый' : job.status === 'In Progress' ? 'В работе' : job.status === 'Completed' ? 'Завершен' : 'Отменен' }}
+            {{ getStatusLabel(job.status) }}
           </span>
         </header>
 
@@ -234,7 +223,7 @@
                 [class.status-completed]="job.status === 'Completed'"
                 [class.status-cancelled]="job.status === 'Cancelled'"
               >
-                {{ job.status === 'New' ? 'Новый' : job.status === 'In Progress' ? 'В работе' : job.status === 'Completed' ? 'Завершен' : 'Отменен' }}
+                {{ getStatusLabel(job.status) }}
               </span>
             </div>
             <h2 class="drawer-title">{{ job.title }}</h2>
@@ -257,7 +246,7 @@
                   [class.active]="job.status === st"
                   (click)="updateJobStatus(job.id, st)"
                 >
-                  {{ st === 'New' ? 'Новый' : st === 'In Progress' ? 'В работе' : st === 'Completed' ? 'Завершен' : 'Отменен' }}
+                  {{ getStatusLabel(st) }}
                 </button>
               }
             </div>

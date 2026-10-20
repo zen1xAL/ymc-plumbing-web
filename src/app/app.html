@@ -9,7 +9,6 @@
         <span class="brand-subtitle">Диспетчерская служба (CRM & FMS)</span>
       </div>
     </div>
-    <span class="candidate-badge">{{ candidateCode }}</span>
   </div>
 
   <nav class="header-nav">
@@ -64,11 +63,6 @@
       </svg>
       <span>Создать наряд</span>
     </button>
-
-    <div class="server-status">
-      <span class="status-indicator"></span>
-      <span class="status-text">Сервер :3000</span>
-    </div>
 
     <button
       type="button"
@@ -140,6 +134,13 @@
     }
   </section>
 </main>
+
+<footer class="app-footer">
+  <div class="footer-container">
+    <span class="footer-copyright">YMC Plumbing Service Dispatcher &copy; 2026</span>
+    <span class="candidate-badge">{{ candidateCode }}</span>
+  </div>
+</footer>
 
 <app-create-job-modal
   [isOpen]="isCreateJobModalOpen()"

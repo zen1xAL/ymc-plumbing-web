@@ -98,7 +98,7 @@ export class JobService {
   }
 
   updateJob(id: string, input: UpdateJobInput): Observable<Task> {
-    return this.api.patch<Task>(`/tasks/${id}`, input).pipe(
+    return this.api.patch<Task>(`/tasks/${encodeURIComponent(id)}`, input).pipe(
       tap((updated) => {
         this._jobs.update((prev) => prev.map((j) => (j.id === id ? updated : j)));
         this.historyService.loadHistory().subscribe({ error: () => {} });
@@ -107,7 +107,7 @@ export class JobService {
   }
 
   updateStatus(id: string, status: TaskStatus): Observable<Task> {
-    return this.api.patch<Task>(`/tasks/${id}`, { status }).pipe(
+    return this.api.patch<Task>(`/tasks/${encodeURIComponent(id)}`, { status }).pipe(
       tap((updated) => {
         this._jobs.update((prev) => prev.map((j) => (j.id === id ? updated : j)));
         this.historyService.loadHistory().subscribe({ error: () => {} });
@@ -116,7 +116,7 @@ export class JobService {
   }
 
   deleteJob(id: string): Observable<{ success: boolean; id: string }> {
-    return this.api.delete<{ success: boolean; id: string }>(`/tasks/${id}`).pipe(
+    return this.api.delete<{ success: boolean; id: string }>(`/tasks/${encodeURIComponent(id)}`).pipe(
       tap(() => {
         this._jobs.update((prev) => prev.filter((j) => j.id !== id));
         this.historyService.loadHistory().subscribe({ error: () => {} });
