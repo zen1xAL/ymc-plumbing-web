@@ -8,6 +8,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DB_FILE = path.join(__dirname, 'db.json');
 
+const STATUS_RU_MAP = {
+  'New': 'Новый',
+  'In Progress': 'В работе',
+  'Completed': 'Завершен',
+  'Cancelled': 'Отменен'
+};
+
 app.use(cors());
 app.use(express.json());
 
@@ -32,7 +39,7 @@ function getNextTaskId(db) {
   let maxNum = 100;
   for (const t of (db.tasks || [])) {
     if (typeof t.id === 'string') {
-      const match = t.id.match(/^#?(\d+)$/);
+      const match = t.id.match(/^JOB-(\d+)$/i) || t.id.match(/^#?(\d+)$/);
       if (match) {
         const num = parseInt(match[1], 10);
         if (num > maxNum) {
@@ -41,7 +48,7 @@ function getNextTaskId(db) {
       }
     }
   }
-  return `#${maxNum + 1}`;
+  return `JOB-${maxNum + 1}`;
 }
 
 function getNextLeadId(db) {
@@ -62,12 +69,13 @@ function getNextLeadId(db) {
 
 function findTaskIndex(tasks, idParam) {
   if (!tasks || !idParam) return -1;
-  const normalizedParam = idParam.trim();
-  const cleanParam = normalizedParam.replace(/^#/, '');
+  const normalizedParam = idParam.trim().toLowerCase();
+  const cleanParam = normalizedParam.replace(/^job-/, '').replace(/^#/, '');
   return tasks.findIndex((t) => {
     if (!t.id) return false;
-    const cleanId = t.id.replace(/^#/, '');
-    return t.id === normalizedParam || cleanId === cleanParam;
+    const lowerId = t.id.toLowerCase();
+    const cleanId = lowerId.replace(/^job-/, '').replace(/^#/, '');
+    return lowerId === normalizedParam || cleanId === cleanParam;
   });
 }
 
@@ -325,8 +333,9 @@ app.patch('/tasks/:id', async (req, res) => {
 
   const isStatusChanged = oldStatus !== newStatus;
   const actionType = isStatusChanged ? 'STATUS_CHANGE' : 'EDIT';
+  const statusRu = STATUS_RU_MAP[newStatus] || newStatus;
   const desc = isStatusChanged
-    ? `Статус наряда «${patchedTask.title}» изменен на «${newStatus}» (Мастер: ${patchedTask.assignedTechnician || '–'})`
+    ? `Статус наряда «${patchedTask.title}» изменен на «${statusRu}» (Мастер: ${patchedTask.assignedTechnician || '–'})`
     : `Обновлены данные наряда «${patchedTask.title}»`;
 
   logActivity(db, actionType, desc, patchedTask.id, patchedTask.title);

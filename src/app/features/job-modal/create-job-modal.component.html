@@ -224,7 +224,7 @@
                   <option value="" disabled>– Назначенный мастер –</option>
                   @for (tech of technicianService.activeTechnicians(); track tech.id) {
                     <option [value]="tech.name">
-                      {{ tech.name }} ({{ tech.specialization }})
+                      {{ tech.name }} – {{ tech.specialization }}
                     </option>
                   }
                 </select>

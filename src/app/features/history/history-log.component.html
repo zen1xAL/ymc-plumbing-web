@@ -96,7 +96,7 @@
       @for (item of filteredHistory(); track item.id) {
         <article class="timeline-entry">
           <div class="entry-meta">
-            <span class="entry-time">{{ item.timestamp | date:'medium' }}</span>
+            <span class="entry-time">{{ item.timestamp | date:'dd.MM.yyyy, HH:mm' }}</span>
             <span
               class="action-badge"
               [class.badge-create]="item.actionType === 'CREATE'"
@@ -105,7 +105,7 @@
               [class.badge-delete]="item.actionType === 'DELETE'"
               [class.badge-attach]="item.actionType === 'ATTACHMENT_ADD' || item.actionType === 'ATTACHMENT_REMOVE'"
             >
-              {{ item.actionType }}
+              {{ getActionLabel(item.actionType) }}
             </span>
           </div>
 

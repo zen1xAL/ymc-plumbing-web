@@ -6,7 +6,12 @@ import { TechnicianService } from '@core/services/technician.service';
 import { HistoryService } from '@core/services/history.service';
 import { JobFilter } from '@core/services/job.filter';
 import { Task, TaskStatus } from '@core/models/task.model';
-import { TASK_STATUS_OPTIONS, TASK_STATUS_LABELS, JOB_TYPE_LABELS } from '@core/models/constants';
+import {
+  TASK_STATUS_OPTIONS,
+  TASK_STATUS_LABELS,
+  JOB_TYPE_LABELS,
+  HISTORY_ACTION_LABELS
+} from '@core/models/constants';
 import { HistoryLogItem } from '@core/models/history.model';
 
 @Component({
@@ -51,6 +56,10 @@ export class FmsBoardComponent {
   getJobTypeLabel(type?: string): string {
     if (!type) return '';
     return JOB_TYPE_LABELS[type] ?? type;
+  }
+
+  getActionLabel(action: string): string {
+    return HISTORY_ACTION_LABELS[action as keyof typeof HISTORY_ACTION_LABELS] ?? action;
   }
 
   setStatusFilter(status: 'ALL' | TaskStatus): void {

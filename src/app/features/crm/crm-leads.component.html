@@ -70,7 +70,7 @@
           <tr [class.row-converted]="lead.status === 'Converted'">
             <td class="cell-id">
               <span class="lead-code">{{ lead.id }}</span>
-              <span class="lead-date">{{ lead.createdAt | date:'short' }}</span>
+              <span class="lead-date">{{ lead.createdAt | date:'dd.MM.yyyy, HH:mm' }}</span>
             </td>
 
             <td class="cell-client">

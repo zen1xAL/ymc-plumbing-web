@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HistoryService } from '@core/services/history.service';
 import { HistoryFilter } from '@core/services/history.filter';
 import { HistoryLogItem, HistoryActionType } from '@core/models/history.model';
-import { HISTORY_ACTION_TYPES } from '@core/models/constants';
+import { HISTORY_ACTION_TYPES, HISTORY_ACTION_LABELS } from '@core/models/constants';
 
 @Component({
   selector: 'app-history-log',
@@ -33,6 +33,10 @@ export class HistoryLogComponent implements OnInit {
 
   ngOnInit(): void {
     this.refresh();
+  }
+
+  getActionLabel(action: string): string {
+    return HISTORY_ACTION_LABELS[action as keyof typeof HISTORY_ACTION_LABELS] ?? action;
   }
 
   setActionFilter(action: 'ALL' | HistoryActionType): void {

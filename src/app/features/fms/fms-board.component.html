@@ -98,7 +98,9 @@
         </header>
 
         <div class="card-body">
-          <h3 class="job-title" (click)="openJobDetails(job)">{{ job.title }}</h3>
+          <h3 class="job-title" (click)="openJobDetails(job)">
+            {{ getJobTypeLabel(job.jobType) || job.title }}
+          </h3>
 
           @if (job.client) {
             <div class="client-info">
@@ -131,7 +133,7 @@
               <svg class="icon-inline" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
               </svg>
-              <span>{{ job.dueDate | date:'short' }}</span>
+              <span>{{ job.dueDate | date:'dd.MM.yyyy, HH:mm' }}</span>
             </div>
           </div>
 
@@ -226,7 +228,7 @@
                 {{ getStatusLabel(job.status) }}
               </span>
             </div>
-            <h2 class="drawer-title">{{ job.title }}</h2>
+            <h2 class="drawer-title">{{ getJobTypeLabel(job.jobType) || job.title }}</h2>
           </div>
           <button type="button" class="drawer-close-btn" (click)="closeJobDetails()" aria-label="Закрыть">
             <svg class="close-icon" viewBox="0 0 20 20" fill="currentColor">
@@ -261,7 +263,7 @@
             >
               @for (tech of technicianService.activeTechnicians(); track tech.id) {
                 <option [value]="tech.name">
-                  {{ tech.name }} ({{ tech.specialization }})
+                  {{ tech.name }} – {{ tech.specialization }}
                 </option>
               }
             </select>
@@ -310,19 +312,19 @@
             <div class="info-list">
               <div class="info-row">
                 <span class="info-label">Плановый срок (Due):</span>
-                <span class="info-value">{{ job.dueDate | date:'medium' }}</span>
+                <span class="info-value">{{ job.dueDate | date:'dd.MM.yyyy, HH:mm' }}</span>
               </div>
               @if (job.scheduledTime) {
                 <div class="info-row">
                   <span class="info-label">Интервал прибытия:</span>
                   <span class="info-value">
-                    {{ job.scheduledTime.start | date:'shortTime' }} – {{ job.scheduledTime.end | date:'shortTime' }}
+                    {{ job.scheduledTime.start | date:'HH:mm' }} – {{ job.scheduledTime.end | date:'HH:mm' }}
                   </span>
                 </div>
               }
               <div class="info-row">
                 <span class="info-label">Создан в системе:</span>
-                <span class="info-value">{{ job.createdAt | date:'medium' }}</span>
+                <span class="info-value">{{ job.createdAt | date:'dd.MM.yyyy, HH:mm' }}</span>
               </div>
             </div>
           </section>
@@ -339,10 +341,10 @@
             <div class="job-history-timeline">
               @for (entry of selectedJobHistory(); track entry.id) {
                 <div class="timeline-item">
-                  <div class="timeline-badge">{{ entry.actionType }}</div>
+                  <div class="timeline-badge">{{ getActionLabel(entry.actionType) }}</div>
                   <div class="timeline-body">
                     <p class="timeline-text">{{ entry.description }}</p>
-                    <span class="timeline-time">{{ entry.timestamp | date:'short' }}</span>
+                    <span class="timeline-time">{{ entry.timestamp | date:'dd.MM.yyyy, HH:mm' }}</span>
                   </div>
                 </div>
               } @empty {

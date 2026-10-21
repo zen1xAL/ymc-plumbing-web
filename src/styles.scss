@@ -293,6 +293,13 @@ a:hover {
   padding: var(--spacing-xs);
   border-radius: var(--radius-md);
   border: var(--border-width-thin) solid var(--color-border);
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .filter-btn {
@@ -305,6 +312,8 @@ a:hover {
   border: var(--border-width-thin) solid transparent;
   cursor: pointer;
   transition: all 0.15s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
 
   &:hover {
     color: var(--color-text);
@@ -550,4 +559,24 @@ a:hover {
 
 .text-right {
   text-align: right;
+}
+
+@media (max-width: 600px) {
+  .search-box {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .crm-toolbar,
+  .history-toolbar,
+  .fms-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+
+  .toolbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
 }

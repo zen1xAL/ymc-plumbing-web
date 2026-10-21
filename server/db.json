@@ -10,7 +10,7 @@
       },
       "jobType": "Pipe Leak",
       "source": "Website",
-      "address": "742 Evergreen Terrace, Springfield, OR 97477",
+      "address": "742 Evergreen Terrace",
       "city": "Springfield",
       "zipCode": "97477",
       "description": "Активная протечка медной трубы под кухонной раковиной. Вода перекрыта вентилем, требуется замена участка трубы и фитинга.",
@@ -27,7 +27,7 @@
       },
       "jobType": "Clogged Drain",
       "source": "Phone",
-      "address": "1000 Ocean Drive, Miami Beach, FL 33139",
+      "address": "1000 Ocean Drive",
       "city": "Miami Beach",
       "zipCode": "33139",
       "description": "Глубокий засор главного канализационного стояка частного дома. Механическая прочистка тросом не помогла, требуется гидродинамика.",
@@ -44,7 +44,7 @@
       },
       "jobType": "Water Heater",
       "source": "Google Ads",
-      "address": "450 Lexington Ave, New York, NY 10017",
+      "address": "450 Lexington Ave",
       "city": "New York",
       "zipCode": "10017",
       "description": "Электрический водонагреватель на 200л шумит при нагреве и выбивает дифференциальный автомат. Необходима диагностика ТЭНа.",
@@ -61,7 +61,7 @@
       },
       "jobType": "Inspection",
       "source": "Referral",
-      "address": "120 Pine Street, Seattle, WA 98101",
+      "address": "120 Pine Street",
       "city": "Seattle",
       "zipCode": "98101",
       "description": "Комплексный плановый осмотр сантехнических коммуникаций, редукторов давления и запорной арматуры перед чистовой отделкой.",
@@ -78,7 +78,7 @@
       },
       "jobType": "Emergency Repair",
       "source": "Walk-in",
-      "address": "88 Elm Street, Boston, MA 02108",
+      "address": "88 Elm Street",
       "city": "Boston",
       "zipCode": "02108",
       "description": "Аварийный свищ на чугунном стояке в подвальном помещении. Требуется срочная установка ремонтного хомута или замена раструба.",
@@ -90,29 +90,29 @@
     {
       "id": "tech-1",
       "name": "Mike Johnson",
-      "specialization": "Ведущий сантехник / Устранение аварийных протечек",
+      "specialization": "Устранение протечек",
       "phone": "+1 (555) 111-2233",
       "active": true
     },
     {
       "id": "tech-2",
       "name": "Alex Rivera",
-      "specialization": "Специалист по канализации и гидродинамической прочистке",
+      "specialization": "Канализация и прочистка",
       "phone": "+1 (555) 444-5566",
       "active": true
     },
     {
       "id": "tech-3",
       "name": "John Doe",
-      "specialization": "Мастер по водонагревателям, котлам и отопительным системам",
+      "specialization": "Водонагреватели и котлы",
       "phone": "+1 (555) 777-8899",
       "active": true
     }
   ],
   "tasks": [
     {
-      "id": "#101",
-      "title": "Pipe Leak – John Smith",
+      "id": "JOB-101",
+      "title": "Устранение протечки – John Smith",
       "description": "Аварийная замена медного колена и подмотка соединений под мойкой на объекте. Клиент предупрежден о прибытии мастера.",
       "dueDate": "2026-10-21T18:00:00.000Z",
       "status": "New",
@@ -140,8 +140,8 @@
       }
     },
     {
-      "id": "#102",
-      "title": "Clogged Drain – Sarah Connor",
+      "id": "JOB-102",
+      "title": "Прочистка засора – Sarah Connor",
       "description": "Гидродинамическая промывка канализационной трубы 110мм с применением роторной насадки. Работы выполняются на выезде.",
       "dueDate": "2026-10-21T14:00:00.000Z",
       "status": "In Progress",
@@ -169,8 +169,8 @@
       }
     },
     {
-      "id": "#103",
-      "title": "Water Heater – Robert Davis",
+      "id": "JOB-103",
+      "title": "Водонагреватель – Robert Davis",
       "description": "Замена магниевого анода и нагревательного элемента ТЭН в накопительном водонагревателе. Проверка герметичности проведена.",
       "dueDate": "2026-10-20T12:00:00.000Z",
       "status": "Completed",
@@ -202,42 +202,42 @@
     {
       "id": "hist-1",
       "actionType": "CREATE",
-      "description": "Создан наряд «Pipe Leak – John Smith» (Мастер: Mike Johnson)",
+      "description": "Создан наряд «Устранение протечки – John Smith» (Мастер: Mike Johnson)",
       "timestamp": "2026-10-20T14:40:00.000Z",
-      "taskId": "#101",
-      "taskTitle": "Pipe Leak – John Smith"
+      "taskId": "JOB-101",
+      "taskTitle": "Устранение протечки – John Smith"
     },
     {
       "id": "hist-2",
       "actionType": "CREATE",
-      "description": "Создан наряд «Clogged Drain – Sarah Connor» (Мастер: Alex Rivera)",
+      "description": "Создан наряд «Прочистка засора – Sarah Connor» (Мастер: Alex Rivera)",
       "timestamp": "2026-10-20T15:20:00.000Z",
-      "taskId": "#102",
-      "taskTitle": "Clogged Drain – Sarah Connor"
+      "taskId": "JOB-102",
+      "taskTitle": "Прочистка засора – Sarah Connor"
     },
     {
       "id": "hist-3",
       "actionType": "STATUS_CHANGE",
-      "description": "Статус наряда «Clogged Drain – Sarah Connor» изменен на «In Progress» (Мастер: Alex Rivera)",
+      "description": "Статус наряда «Прочистка засора – Sarah Connor» изменен на «В работе» (Мастер: Alex Rivera)",
       "timestamp": "2026-10-20T16:45:00.000Z",
-      "taskId": "#102",
-      "taskTitle": "Clogged Drain – Sarah Connor"
+      "taskId": "JOB-102",
+      "taskTitle": "Прочистка засора – Sarah Connor"
     },
     {
       "id": "hist-4",
       "actionType": "CREATE",
-      "description": "Создан наряд «Water Heater – Robert Davis» (Мастер: John Doe)",
+      "description": "Создан наряд «Водонагреватель – Robert Davis» (Мастер: John Doe)",
       "timestamp": "2026-10-20T10:00:00.000Z",
-      "taskId": "#103",
-      "taskTitle": "Water Heater – Robert Davis"
+      "taskId": "JOB-103",
+      "taskTitle": "Водонагреватель – Robert Davis"
     },
     {
       "id": "hist-5",
       "actionType": "STATUS_CHANGE",
-      "description": "Статус наряда «Water Heater – Robert Davis» изменен на «Completed» (Мастер: John Doe)",
+      "description": "Статус наряда «Водонагреватель – Robert Davis» изменен на «Завершен» (Мастер: John Doe)",
       "timestamp": "2026-10-20T12:15:00.000Z",
-      "taskId": "#103",
-      "taskTitle": "Water Heater – Robert Davis"
+      "taskId": "JOB-103",
+      "taskTitle": "Водонагреватель – Robert Davis"
     }
   ]
 }

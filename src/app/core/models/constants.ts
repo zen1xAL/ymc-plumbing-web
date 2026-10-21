@@ -67,8 +67,19 @@ export const HISTORY_ACTION_TYPES: readonly HistoryActionType[] = [
   'EDIT',
   'ATTACHMENT_ADD',
   'ATTACHMENT_REMOVE',
-  'DELETE'
+  'DELETE',
+  'SYNC'
 ] as const;
+
+export const HISTORY_ACTION_LABELS: Record<HistoryActionType, string> = {
+  CREATE: 'Создание',
+  STATUS_CHANGE: 'Смена статуса',
+  EDIT: 'Правка',
+  ATTACHMENT_ADD: 'Вложение',
+  ATTACHMENT_REMOVE: 'Удаление вложения',
+  DELETE: 'Удаление',
+  SYNC: 'Синхронизация'
+};
 
 export const DEFAULT_SCHEDULE_DELAY_HOURS = 1;
 export const DEFAULT_JOB_DURATION_HOURS = 2;
