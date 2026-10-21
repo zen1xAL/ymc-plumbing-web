@@ -146,7 +146,11 @@ async function sendGoogleSheetsSync(payload) {
     const clientName = payload.client
       ? `${payload.client.firstName} ${payload.client.lastName}`.trim()
       : (payload.clientName || '');
-    const phone = payload.client ? (payload.client.phone || '') : (payload.phone || '');
+    const rawPhone = payload.client ? (payload.client.phone || '') : (payload.phone || '');
+    const phoneStr = String(rawPhone || '').trim();
+    const phone = (phoneStr.startsWith('+') || phoneStr.startsWith('=') || phoneStr.startsWith('-'))
+      ? `'${phoneStr}`
+      : phoneStr;
     const address = payload.location ? (payload.location.address || '') : (payload.address || '');
 
     const rowData = {
@@ -165,17 +169,28 @@ async function sendGoogleSheetsSync(payload) {
       updatedAt: payload.updatedAt || new Date().toISOString()
     };
 
-    const response = await fetch(webhookUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(rowData),
-      redirect: 'follow'
-    });
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(rowData),
+          redirect: 'follow'
+        });
 
-    const responseText = await response.text();
-    console.log(`[Google Sheets Webhook]: Status ${response.status} | Response: ${responseText}`);
-  } catch (error) {
-    console.error('Google Sheets Sync dispatch error:', error.message);
+        const responseText = await response.text();
+        console.log(`[Google Sheets Webhook]: Status ${response.status} | Response: ${responseText}`);
+        return;
+      } catch (error) {
+        if (attempt === 2) {
+          console.error('Google Sheets Sync dispatch error:', error.message);
+        } else {
+          await new Promise((resolve) => setTimeout(resolve, 600));
+        }
+      }
+    }
+  } catch (outerError) {
+    console.error('Google Sheets Sync error:', outerError.message);
   }
 }
 
@@ -472,7 +487,7 @@ app.delete('/history', (req, res) => {
   res.json({ success: true });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`[YMC Plumbing Server] Running on http://localhost:${PORT}`);
   console.log(`[Health Check] http://localhost:${PORT}/health`);
   console.log(`[Tasks API]    http://localhost:${PORT}/tasks`);

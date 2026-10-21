@@ -200,6 +200,86 @@
   ],
   "history": [
     {
+      "id": "hist-1792609117812-zzzmi",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Test Phone Format» (Мастер: Не назначен)",
+      "timestamp": "2026-10-21T18:58:37.812Z",
+      "taskId": "JOB-107",
+      "taskTitle": "Test Phone Format"
+    },
+    {
+      "id": "hist-1792608998324-dvjvm",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Test Phone Row» (Мастер: Не назначен)",
+      "timestamp": "2026-10-21T18:56:38.324Z",
+      "taskId": "JOB-106",
+      "taskTitle": "Test Phone Row"
+    },
+    {
+      "id": "hist-1792608408891-nngmj",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Clogged Drain – Sarah Connor» изменен на «Новый» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T18:46:48.891Z",
+      "taskId": "JOB-105",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-1792608407015-im713",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Clogged Drain – Sarah Connor» изменен на «Отменен» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T18:46:47.015Z",
+      "taskId": "JOB-105",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-1792608406028-ll407",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Clogged Drain – Sarah Connor» изменен на «Новый» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T18:46:46.028Z",
+      "taskId": "JOB-105",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-1792608404923-bxvxc",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Clogged Drain – Sarah Connor» изменен на «Завершен» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T18:46:44.923Z",
+      "taskId": "JOB-105",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-1792608402595-qn345",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Clogged Drain – Sarah Connor» изменен на «В работе» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T18:46:42.595Z",
+      "taskId": "JOB-105",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-1792608372595-731ac",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Clogged Drain – Sarah Connor» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T18:46:12.595Z",
+      "taskId": "JOB-105",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-1792608087876-mwmdy",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Pipe Leak – John Smith» изменен на «Отменен» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T18:41:27.876Z",
+      "taskId": "JOB-104",
+      "taskTitle": "Pipe Leak – John Smith"
+    },
+    {
+      "id": "hist-1792608043838-98knr",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Pipe Leak – John Smith» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T18:40:43.839Z",
+      "taskId": "JOB-104",
+      "taskTitle": "Pipe Leak – John Smith"
+    },
+    {
       "id": "hist-1792543725109-rmsza",
       "actionType": "STATUS_CHANGE",
       "description": "Статус наряда «Устранение протечки – John Smith» изменен на «Новый» (Мастер: Mike Johnson)",

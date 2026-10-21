@@ -159,7 +159,10 @@ function doPost(e) {
     
     var data = JSON.parse(e.postData.contents);
     var clientName = data.client ? (data.client.firstName + " " + data.client.lastName) : (data.clientName || "");
-    var phone = data.client ? data.client.phone : (data.phone || "");
+    var rawPhone = data.client ? data.client.phone : (data.phone || "");
+    var phone = (typeof rawPhone === "string" && (rawPhone.startsWith("+") || rawPhone.startsWith("=") || rawPhone.startsWith("-")))
+      ? ("'" + rawPhone)
+      : rawPhone;
     var address = data.location ? data.location.address : (data.address || "");
     
     sheet.appendRow([
