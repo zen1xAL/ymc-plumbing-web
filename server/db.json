@@ -14,7 +14,7 @@
       "city": "Springfield",
       "zipCode": "97477",
       "description": "Активная протечка медной трубы под кухонной раковиной. Вода перекрыта вентилем, требуется замена участка трубы и фитинга.",
-      "status": "New",
+      "status": "Converted",
       "createdAt": "2026-10-20T14:30:00.000Z"
     },
     {
@@ -31,7 +31,7 @@
       "city": "Miami Beach",
       "zipCode": "33139",
       "description": "Глубокий засор главного канализационного стояка частного дома. Механическая прочистка тросом не помогла, требуется гидродинамика.",
-      "status": "New",
+      "status": "Converted",
       "createdAt": "2026-10-20T15:10:00.000Z"
     },
     {
@@ -48,7 +48,7 @@
       "city": "New York",
       "zipCode": "10017",
       "description": "Электрический водонагреватель на 200л шумит при нагреве и выбивает дифференциальный автомат. Необходима диагностика ТЭНа.",
-      "status": "New",
+      "status": "Converted",
       "createdAt": "2026-10-20T16:00:00.000Z"
     },
     {
@@ -65,7 +65,7 @@
       "city": "Seattle",
       "zipCode": "98101",
       "description": "Комплексный плановый осмотр сантехнических коммуникаций, редукторов давления и запорной арматуры перед чистовой отделкой.",
-      "status": "New",
+      "status": "Converted",
       "createdAt": "2026-10-20T17:20:00.000Z"
     },
     {
@@ -110,6 +110,136 @@
     }
   ],
   "tasks": [
+    {
+      "id": "JOB-108",
+      "title": "Clogged Drain – Sarah Connor",
+      "description": "Глубокий засор главного канализационного стояка частного дома. Механическая прочистка тросом не помогла, требуется гидродинамика.",
+      "dueDate": "2026-10-21T20:33:00.000Z",
+      "status": "Completed",
+      "location": {
+        "address": "1000 Ocean Drive, Miami Beach, OR, 33139",
+        "latitude": 25.7811,
+        "longitude": -80.13207
+      },
+      "attachments": [],
+      "syncStatus": "synced",
+      "createdAt": "2026-10-21T19:33:42.080Z",
+      "updatedAt": "2026-10-21T19:35:15.212Z",
+      "client": {
+        "firstName": "Sarah",
+        "lastName": "Connor",
+        "phone": "+1 (555) 876-5432",
+        "email": "s.connor@cyberdyne.io"
+      },
+      "jobType": "Clogged Drain",
+      "source": "Phone",
+      "assignedTechnician": "Mike Johnson",
+      "scheduledTime": {
+        "start": "2026-10-21T20:33:00.000Z",
+        "end": "2026-10-20T22:33:00.000Z"
+      }
+    },
+    {
+      "id": "JOB-107",
+      "title": "Inspection – Emily Taylor",
+      "description": "Комплексный плановый осмотр сантехнических коммуникаций, редукторов давления и запорной арматуры перед чистовой отделкой.",
+      "dueDate": "2026-10-21T20:27:00.000Z",
+      "status": "Completed",
+      "location": {
+        "address": "120 Pine Street, Seattle, OR, 98101",
+        "latitude": 44.05127,
+        "longitude": -123.01975
+      },
+      "attachments": [],
+      "syncStatus": "synced",
+      "createdAt": "2026-10-21T19:27:58.271Z",
+      "updatedAt": "2026-10-21T19:30:02.603Z",
+      "client": {
+        "firstName": "Emily",
+        "lastName": "Taylor",
+        "phone": "+1 (555) 901-2345",
+        "email": "emily.t@gmail.com"
+      },
+      "jobType": "Inspection",
+      "source": "Referral",
+      "assignedTechnician": "John Doe",
+      "scheduledTime": {
+        "start": "2026-10-21T20:27:00.000Z",
+        "end": "2026-10-20T22:27:00.000Z"
+      }
+    },
+    {
+      "id": "JOB-106",
+      "title": "Water Heater – Robert Davis",
+      "description": "Электрический водонагреватель на 200л шумит при нагреве и выбивает дифференциальный автомат. Необходима диагностика ТЭНа.",
+      "dueDate": "2026-10-21T20:21:00.000Z",
+      "status": "Completed",
+      "location": {
+        "address": "450 Lexington Ave, New York, OR, 10017",
+        "latitude": 40.69801,
+        "longitude": -74.00999
+      },
+      "attachments": [],
+      "syncStatus": "synced",
+      "createdAt": "2026-10-21T19:21:31.413Z",
+      "updatedAt": "2026-10-21T19:24:41.902Z",
+      "client": {
+        "firstName": "Robert",
+        "lastName": "Davis",
+        "phone": "+1 (555) 345-6789",
+        "email": "rdavis@metro-build.com"
+      },
+      "jobType": "Water Heater",
+      "source": "Google Ads",
+      "assignedTechnician": "Alex Rivera",
+      "scheduledTime": {
+        "start": "2026-10-21T20:21:00.000Z",
+        "end": "2026-10-20T22:21:00.000Z"
+      }
+    },
+    {
+      "id": "JOB-105",
+      "title": "Pipe Leak – John Smith",
+      "description": "Активная протечка медной трубы под кухонной раковиной. Вода перекрыта вентилем, требуется замена участка трубы и фитинга.",
+      "dueDate": "2026-10-21T20:12:00.000Z",
+      "status": "New",
+      "location": {
+        "address": "742 Evergreen Terrace, Springfield, OR, 97477",
+        "latitude": 44.05094,
+        "longitude": -123.03061
+      },
+      "attachments": [],
+      "syncStatus": "synced",
+      "createdAt": "2026-10-21T19:12:40.020Z",
+      "updatedAt": "2026-10-21T19:12:40.023Z",
+      "client": {
+        "firstName": "John",
+        "lastName": "Smith",
+        "phone": "+1 (555) 234-5678",
+        "email": "john.smith@example.com"
+      },
+      "jobType": "Pipe Leak",
+      "source": "Website",
+      "assignedTechnician": "Mike Johnson",
+      "scheduledTime": {
+        "start": "2026-10-21T20:12:00.000Z",
+        "end": "2026-10-20T22:12:00.000Z"
+      }
+    },
+    {
+      "id": "JOB-104",
+      "title": "Наряд JOB-104",
+      "description": "",
+      "dueDate": "2026-10-21T19:09:43.222Z",
+      "status": "Completed",
+      "location": {
+        "address": ""
+      },
+      "attachments": [],
+      "syncStatus": "synced",
+      "createdAt": "2026-10-21T19:09:43.222Z",
+      "updatedAt": "2026-10-21T19:09:43.222Z"
+    },
     {
       "id": "JOB-101",
       "title": "Устранение протечки – John Smith",
@@ -199,6 +329,70 @@
     }
   ],
   "history": [
+    {
+      "id": "hist-1792611315212-n3fku",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Clogged Drain – Sarah Connor» изменен на «Завершен» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T19:35:15.212Z",
+      "taskId": "JOB-108",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-1792611222084-iqm1g",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Clogged Drain – Sarah Connor» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T19:33:42.084Z",
+      "taskId": "JOB-108",
+      "taskTitle": "Clogged Drain – Sarah Connor"
+    },
+    {
+      "id": "hist-1792611002603-oylyh",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Inspection – Emily Taylor» изменен на «Завершен» (Мастер: John Doe)",
+      "timestamp": "2026-10-21T19:30:02.603Z",
+      "taskId": "JOB-107",
+      "taskTitle": "Inspection – Emily Taylor"
+    },
+    {
+      "id": "hist-1792610878274-ydbuq",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Inspection – Emily Taylor» (Мастер: John Doe)",
+      "timestamp": "2026-10-21T19:27:58.274Z",
+      "taskId": "JOB-107",
+      "taskTitle": "Inspection – Emily Taylor"
+    },
+    {
+      "id": "hist-1792610681902-kspxt",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Water Heater – Robert Davis» изменен на «Завершен» (Мастер: Alex Rivera)",
+      "timestamp": "2026-10-21T19:24:41.902Z",
+      "taskId": "JOB-106",
+      "taskTitle": "Water Heater – Robert Davis"
+    },
+    {
+      "id": "hist-1792610491417-vymod",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Water Heater – Robert Davis» (Мастер: Alex Rivera)",
+      "timestamp": "2026-10-21T19:21:31.417Z",
+      "taskId": "JOB-106",
+      "taskTitle": "Water Heater – Robert Davis"
+    },
+    {
+      "id": "hist-1792609960023-jm0w8",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Pipe Leak – John Smith» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T19:12:40.023Z",
+      "taskId": "JOB-105",
+      "taskTitle": "Pipe Leak – John Smith"
+    },
+    {
+      "id": "hist-1792609783222-8lzwy",
+      "actionType": "CREATE",
+      "description": "Создан наряд «Наряд JOB-104» (Мастер: Не назначен)",
+      "timestamp": "2026-10-21T19:09:43.222Z",
+      "taskId": "JOB-104",
+      "taskTitle": "Наряд JOB-104"
+    },
     {
       "id": "hist-1792609117812-zzzmi",
       "actionType": "CREATE",
