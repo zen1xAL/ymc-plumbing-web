@@ -1,8 +1,8 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
-const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -128,9 +128,8 @@ async function sendSlackNotification(payload) {
       body: JSON.stringify(slackMessage)
     });
 
-    if (!response.ok) {
-      console.warn('Slack Webhook response status:', response.status);
-    }
+    const responseText = await response.text();
+    console.log(`[Slack Webhook]: Status ${response.status} | Response: ${responseText}`);
   } catch (error) {
     console.error('Slack Webhook dispatch error:', error.message);
   }
@@ -144,24 +143,37 @@ async function sendGoogleSheetsSync(payload) {
   }
 
   try {
+    const clientName = payload.client
+      ? `${payload.client.firstName} ${payload.client.lastName}`.trim()
+      : (payload.clientName || '');
+    const phone = payload.client ? (payload.client.phone || '') : (payload.phone || '');
+    const address = payload.location ? (payload.location.address || '') : (payload.address || '');
+
     const rowData = {
-      taskId: payload.taskId,
-      title: payload.taskTitle,
-      clientName: payload.client ? `${payload.client.firstName} ${payload.client.lastName}` : '',
-      phone: payload.client ? payload.client.phone : '',
-      address: payload.location ? payload.location.address : '',
-      technician: payload.assignedTechnician || '',
+      taskId: payload.id || payload.taskId || '',
+      id: payload.id || payload.taskId || '',
+      taskTitle: payload.title || payload.taskTitle || '',
+      title: payload.title || payload.taskTitle || '',
+      clientName,
+      phone,
+      address,
+      technician: payload.assignedTechnician || payload.technician || '',
+      assignedTechnician: payload.assignedTechnician || payload.technician || '',
       jobType: payload.jobType || '',
-      status: payload.status,
-      dueDate: payload.dueDate,
+      status: payload.status || '',
+      dueDate: payload.dueDate || '',
       updatedAt: payload.updatedAt || new Date().toISOString()
     };
 
-    await fetch(webhookUrl, {
+    const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(rowData)
+      body: JSON.stringify(rowData),
+      redirect: 'follow'
     });
+
+    const responseText = await response.text();
+    console.log(`[Google Sheets Webhook]: Status ${response.status} | Response: ${responseText}`);
   } catch (error) {
     console.error('Google Sheets Sync dispatch error:', error.message);
   }
