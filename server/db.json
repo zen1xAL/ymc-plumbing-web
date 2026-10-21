@@ -124,7 +124,7 @@
       "attachments": [],
       "syncStatus": "synced",
       "createdAt": "2026-10-20T14:40:00.000Z",
-      "updatedAt": "2026-10-21T00:43:17.164Z",
+      "updatedAt": "2026-10-21T00:48:45.109Z",
       "client": {
         "firstName": "John",
         "lastName": "Smith",
@@ -199,6 +199,22 @@
     }
   ],
   "history": [
+    {
+      "id": "hist-1792543725109-rmsza",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Устранение протечки – John Smith» изменен на «Новый» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T00:48:45.109Z",
+      "taskId": "JOB-101",
+      "taskTitle": "Устранение протечки – John Smith"
+    },
+    {
+      "id": "hist-1792543715547-28hs5",
+      "actionType": "STATUS_CHANGE",
+      "description": "Статус наряда «Устранение протечки – John Smith» изменен на «В работе» (Мастер: Mike Johnson)",
+      "timestamp": "2026-10-21T00:48:35.547Z",
+      "taskId": "JOB-101",
+      "taskTitle": "Устранение протечки – John Smith"
+    },
     {
       "id": "hist-1792543397164-su6wh",
       "actionType": "STATUS_CHANGE",
